@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon1.jpg",
+      "PackagePath": "staticwebassets\\images\\salon1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon2.jpg",
+      "PackagePath": "staticwebassets\\images\\salon2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon3.jpg",
+      "PackagePath": "staticwebassets\\images\\salon3.jpg"
+    },
+    {
       "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

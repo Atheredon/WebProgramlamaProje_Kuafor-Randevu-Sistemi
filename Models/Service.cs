@@ -4,18 +4,24 @@ namespace KuaförRandevuSistemi.Models
 {
     public class Service
     {
-        public int ServiceId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be a positive value.")]
-        public decimal Price { get; set; }
+        [StringLength(500)]
+        public string Description { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Duration must be at least 1 minute.")]
-        public int Duration { get; set; } //Minutes
+        [Range(5, 240)] //minutes
+        public int Duration { get; set; }
+
+        [Required]
+        public int Price { get; set; }
+
+        
+        public virtual ICollection<Staff> Staff { get; set; }
     }
 }

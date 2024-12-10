@@ -4,31 +4,27 @@ namespace KuaförRandevuSistemi.Models
 {
     public class User
     {
-        public int UserId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
+        [StringLength(100)]
+        public string Surname { get; set; }
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string Username { get; set; }
-
-        [Required]
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
+        [StringLength(255, MinimumLength = 6)]
         public string Password { get; set; }
 
+        [Required]
+        [StringLength(10)] // Role can be "Admin", "Staff", or "Customer"
+        public string Role { get; set; }
     }
 }
