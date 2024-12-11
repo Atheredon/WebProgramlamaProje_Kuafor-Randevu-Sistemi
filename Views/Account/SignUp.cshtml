@@ -1,0 +1,44 @@
+﻿<link href="/css/sign-up.css" rel="stylesheet">
+
+<div class="d-flex justify-content-center align-items-start vh-100">
+    <main class="form-signin">
+        <form method="post" action="/Account/SignUp">
+            <h1 class="h3 mb-3 fw-normal text-center">Create an Account</h1>
+
+            <!-- Name and Surname -->
+            <div class="row g-2">
+                <!-- Name -->
+                <div class="col-md-6 form-floating">
+                    <input type="text" class="form-control" id="floatingName" name="Name" placeholder="John" required>
+                    <label for="floatingName">Name</label>
+                </div>
+
+                <!-- Surname -->
+                <div class="col-md-6 form-floating">
+                    <input type="text" class="form-control" id="floatingSurname" name="Surname" placeholder="Doe" required>
+                    <label for="floatingSurname">Surname</label>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-floating mt-2">
+                <input type="email" class="form-control" id="floatingEmail" name="Email" placeholder="name@example.com" required>
+                <label for="floatingEmail">Email Address</label>
+            </div>
+
+            <!-- Password -->
+            <div class="form-floating mt-2">
+                <input type="password" class="form-control" id="floatingPassword" name="Password" placeholder="Password" required>
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-floating mt-2">
+                <input type="password" class="form-control" id="floatingConfirmPassword" name="ConfirmPassword" placeholder="Confirm Password" required>
+                <label for="floatingConfirmPassword">Confirm Password</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Sign Up</button>
+        </form>
+    </main>
+</div>

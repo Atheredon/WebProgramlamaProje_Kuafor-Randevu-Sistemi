@@ -1,0 +1,32 @@
+html,
+body {
+    height: 100%;
+}
+
+.form-signup {
+    max-width: 400px;
+    padding: 15px;
+    background-color: #f8f9fa; /* Light background for the form */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for form */
+}
+
+.d-flex.align-items-start {
+    margin-top: 150px; /* Adjust this value for a better position */
+}
+
+    .form-signup .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-signup input[type="email"],
+    .form-signup input[type="text"],
+    .form-signup input[type="password"] {
+        margin-bottom: 10px;
+        border-radius: 0;
+    }
+
+        .form-signup input[type="password"]:last-of-type {
+            border-bottom-right-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
