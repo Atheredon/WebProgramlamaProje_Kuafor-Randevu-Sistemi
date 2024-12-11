@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KuaförRandevuSistemi.Models
 {
@@ -7,24 +8,25 @@ namespace KuaförRandevuSistemi.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Full name is required.")]
+        [StringLength(50, ErrorMessage = "Full name cannot exceed 50 characters.")]
+        public string FullName { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Surname { get; set; }
-
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(255, MinimumLength = 6)]
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password)]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(10)] // Role can be "Admin", "Staff", or "Customer"
-        public string Role { get; set; }
+        [NotMapped] // Exclude from the database
+        [Required(ErrorMessage = "Confirm password is required.")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public string Role { get; set; } = "Customer";
     }
 }

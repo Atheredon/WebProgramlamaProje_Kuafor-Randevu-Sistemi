@@ -1,77 +1,67 @@
-﻿@{
-    ViewData["Title"] = "Welcome to Hair Salon";
-}
-<div class="container-fluid p-0">
-    <!-- Carousel -->
-    <div id="salonCarousel" class="carousel slide" data-bs-ride="carousel">
-        <!-- Indicators -->
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
+﻿
+<link href="/css/carousel.css" rel="stylesheet">
 
-        <!-- Slides -->
-        <div class="carousel-inner">
-            <!-- Slide 1 -->
-            <div class="carousel-item active">
-                <img src="/images/salon1.jpg" class="d-block w-100" alt="Salon Image 1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Welcome to [Your Salon Name]</h5>
-                    <p>Experience the best salon services in town.</p>
-                </div>
-            </div>
-
-            <!-- Slide 2 -->
-            <div class="carousel-item">
-                <img src="/images/salon2.jpg" class="d-block w-100" alt="Salon Image 2">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Professional Stylists</h5>
-                    <p>Our team of experts are here to make you look your best.</p>
-                </div>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="carousel-item">
-                <img src="/images/salon3.jpg" class="d-block w-100" alt="Salon Image 3">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Relaxing Atmosphere</h5>
-                    <p>Unwind and pamper yourself in our cozy salon.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#salonCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#salonCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/images/salon1.jpg" class="d-block w-100" alt="Slide 1">
+            <div class="container">
+                <div class="carousel-caption text-start">
+                    <h1>Welcome to Our Salon</h1>
+                    <p>Experience luxury and comfort.</p>
+                    <p><a class="btn btn-lg btn-primary" href="/Account/SignUp">Sign up today</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="/images/salon2.jpg" class="d-block w-100" alt="Slide 2">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Professional Services</h1>
+                    <p>Our experts will transform your look.</p>
+                    <p><a class="btn btn-lg btn-primary" href="/Appointments/Book">Learn more</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="/images/salon3.jpg" class="d-block w-100" alt="Slide 3">
+            <div class="container">
+                <div class="carousel-caption text-end">
+                    <h1>Relaxing Atmosphere</h1>
+                    <p>Enjoy a tranquil experience with us.</p>
+                    <p><a class="btn btn-lg btn-primary" href="/Gallery">Browse gallery</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
 
-<!-- Explanations and Appointment Button -->
-<div class="container mt-4 text-center">
-    <h2>Why Choose Us?</h2>
-    <p class="lead">At [Your Salon Name], we combine skill, quality, and comfort to bring out your best look!</p>
+<div class="container marketing mt-5">
     <div class="row">
-        <div class="col-md-4">
-            <h5>Top-notch Services</h5>
-            <p>From haircuts to coloring, we provide exceptional services tailored to your needs.</p>
+        <div class="col-lg-4">
+            <h2>Top-notch Services</h2>
+            <p>Experience personalized services tailored to your needs.</p>
         </div>
-        <div class="col-md-4">
-            <h5>Happy Customers</h5>
-            <p>Over 500+ satisfied customers. Your happiness is our priority!</p>
+        <div class="col-lg-4">
+            <h2>Happy Customers</h2>
+            <p>Over 500 satisfied customers! Your happiness is our priority.</p>
         </div>
-        <div class="col-md-4">
-            <h5>Relaxing Environment</h5>
-            <p>A cozy and professional setting to make you feel at home.</p>
+        <div class="col-lg-4">
+            <h2>Relaxing Atmosphere</h2>
+            <p>Enjoy a cozy and professional environment.</p>
         </div>
-    </div>
-    <div class="mt-4">
-        <a href="/Appointments/Book" class="btn btn-primary btn-lg">Make an Appointment</a>
     </div>
 </div>

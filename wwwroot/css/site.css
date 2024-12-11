@@ -12,6 +12,11 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -20,3 +25,4 @@ html {
 body {
   margin-bottom: 60px;
 }
+
