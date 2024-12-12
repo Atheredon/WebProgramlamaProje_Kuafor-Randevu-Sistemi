@@ -13,7 +13,7 @@ namespace KuaförRandevuSistemi.Models
             if (!optionsBuilder.IsConfigured)
             {
                 // Replace with your PostgreSQL connection string
-                optionsBuilder.UseNpgsql("Host=localhost;Database=HairSalonDB;Username=postgre;Password=uk332003");
+                optionsBuilder.UseNpgsql("Host=localhost;Database=HairSalonDB;Username=postgres;Password=uk332003");
             }
         }
 
