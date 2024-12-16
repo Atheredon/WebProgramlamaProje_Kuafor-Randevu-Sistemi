@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KuaförRandevuSistemi.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         [HttpGet]
         public IActionResult SignUp()
@@ -69,19 +69,21 @@ namespace KuaförRandevuSistemi.Controllers
                         // Store user info in session
                         HttpContext.Session.SetString("UserId", user.Id.ToString());
                         HttpContext.Session.SetString("UserRole", user.Role);
+                        HttpContext.Session.SetString("UserName", user.Name + " " + user.Surname);
 
-                        // Create a cookie if "Remember Me" is checked
+                        // Create cookies if "Remember Me" is checked
                         if (rememberMe)
                         {
                             var cookieOptions = new CookieOptions
                             {
-                                Expires = DateTime.Now.AddDays(30), // Set cookie expiration to 30 days
-                                HttpOnly = true, // Prevent access via JavaScript
-                                Secure = true, // Use secure cookies if your site is HTTPS
+                                Expires = DateTime.Now.AddDays(30),
+                                HttpOnly = true,
+                                Secure = true,
                             };
 
                             Response.Cookies.Append("UserId", user.Id.ToString(), cookieOptions);
                             Response.Cookies.Append("UserRole", user.Role, cookieOptions);
+                            Response.Cookies.Append("UserName", user.Name + " " + user.Surname, cookieOptions);
                         }
 
                         TempData["SuccessMessage"] = "Login successful!";
@@ -110,6 +112,31 @@ namespace KuaförRandevuSistemi.Controllers
 
             TempData["SuccessMessage"] = "You have been logged out.";
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult ViewDetails()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                // Pass user data to the layout via ViewData
+                ViewData["UserName"] = user.Name + " " + user.Surname;
+                ViewData["UserRole"] = user.Role;
+
+                return View(user);
+            }
         }
 
     }
