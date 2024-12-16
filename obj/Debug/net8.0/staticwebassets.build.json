@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "a7HrWaqg7H2JDEsidKVQ6+1WSDHf45k010hKcHY1ug4=",
+  "Hash": "rztBl1pwkzAHMDf54XjdRUFipHpPdtvyt3vnkyvoCGg=",
   "Source": "KuaförRandevuSistemi",
   "BasePath": "_content/KuaförRandevuSistemi",
   "Mode": "Default",
@@ -699,6 +699,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\carousel.rtl.css"
+    },
+    {
+      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\css\\sign-in.css",
+      "SourceId": "KuaförRandevuSistemi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\",
+      "BasePath": "_content/KuaförRandevuSistemi",
+      "RelativePath": "css/sign-in.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\sign-in.css"
     },
     {
       "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\css\\sign-up.css",

@@ -8,9 +8,13 @@ namespace KuaförRandevuSistemi.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Full name is required.")]
-        [StringLength(50, ErrorMessage = "Full name cannot exceed 50 characters.")]
-        public string FullName { get; set; }
+        [Required(ErrorMessage = "First name is required.")]
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Last name is required.")]
+        [StringLength(25, ErrorMessage = "Last name cannot exceed 25 characters.")]
+        public string Surname { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
@@ -21,12 +25,12 @@ namespace KuaförRandevuSistemi.Models
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
 
-        [NotMapped] // Exclude from the database
-        [Required(ErrorMessage = "Confirm password is required.")]
+        [NotMapped]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Role { get; set; } = "Customer";
     }
+
 }

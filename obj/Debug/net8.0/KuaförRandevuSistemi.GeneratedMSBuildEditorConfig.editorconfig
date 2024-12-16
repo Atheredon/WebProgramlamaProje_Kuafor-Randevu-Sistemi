@@ -26,8 +26,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Uygar.UYGARPC.000\source\repos\KuaförRandevuSistemi\KuaförRandevuSistemi
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Account/SignUp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Account/ViewDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3RGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Home/Index.cshtml]

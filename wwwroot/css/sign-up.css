@@ -15,18 +15,18 @@ body {
     margin-top: 150px; /* Adjust this value for a better position */
 }
 
-    .form-signup .form-floating:focus-within {
-        z-index: 2;
-    }
+form-signup .form-floating:focus-within {
+    z-index: 2;
+}
 
-    .form-signup input[type="email"],
-    .form-signup input[type="text"],
-    .form-signup input[type="password"] {
-        margin-bottom: 10px;
-        border-radius: 0;
-    }
+.form-signup input[type="email"],
+.form-signup input[type="text"],
+.form-signup input[type="password"] {
+    margin-bottom: 10px;
+    border-radius: 0;
+}
 
-        .form-signup input[type="password"]:last-of-type {
-            border-bottom-right-radius: 0.25rem;
-            border-bottom-left-radius: 0.25rem;
-        }
+.form-signup input[type="password"]:last-of-type {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
