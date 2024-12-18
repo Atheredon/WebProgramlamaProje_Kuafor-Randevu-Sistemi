@@ -1,0 +1,53 @@
+﻿@model KuaförRandevuSistemi.Models.Staff
+
+<div class="container mt-5">
+    <h1 class="mb-4">Add New Staff</h1>
+
+    <form method="post" action="/Admin/AddStaff">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="Name" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" required maxlength="50" />
+        </div>
+
+        <!-- Surname -->
+        <div class="mb-3">
+            <label for="Surname" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="Surname" name="Surname" required maxlength="25" />
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" required />
+        </div>
+
+        <!-- Specialty -->
+        <div class="mb-3">
+            <label for="Specialty" class="form-label">Specialty</label>
+            <select class="form-control" id="Specialty" name="specialtyId">
+                <option value="">None</option>
+                @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
+                {
+                    <option value="@service.Id">@service.Name</option>
+                }
+            </select>
+        </div>
+
+        <!-- Services -->
+        <div class="mb-3">
+            <label for="Services" class="form-label">Services</label>
+            <select class="form-control" id="Services" name="serviceIds" multiple>
+                @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
+                {
+                    <option value="@service.Id">@service.Name</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Staff</button>
+        <a href="/Admin/Staff" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

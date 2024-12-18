@@ -38,8 +38,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3RGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/AddService.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkU2VydmljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/AddStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkU3RhZmYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/DeleteService.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGVsZXRlU2VydmljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/EditService.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFNlcnZpY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/RemoveStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVtb3ZlU3RhZmYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/Services.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2VydmljZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/Staff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3RhZmYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Home/Index.cshtml]

@@ -2,6 +2,7 @@
 using KuaförRandevuSistemi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KuaförRandevuSistemi.Migrations
 {
     [DbContext(typeof(SalonDbContext))]
-    partial class SalonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241218180558_StaffEditedv2")]
+    partial class StaffEditedv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,12 @@ namespace KuaförRandevuSistemi.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("StaffId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StaffId");
 
                     b.ToTable("Services");
                 });
@@ -57,6 +65,11 @@ namespace KuaförRandevuSistemi.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -85,66 +98,33 @@ namespace KuaförRandevuSistemi.Migrations
 
                     b.ToTable("Users");
 
-                    b.UseTptMappingStrategy();
-                });
+                    b.HasDiscriminator().HasValue("User");
 
-            modelBuilder.Entity("ServiceStaff", b =>
-                {
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ServicesId", "StaffId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("StaffServices", (string)null);
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("KuaförRandevuSistemi.Models.Staff", b =>
                 {
                     b.HasBaseType("KuaförRandevuSistemi.Models.User");
 
-                    b.Property<int>("SpecialtyId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Specialty")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.HasIndex("SpecialtyId");
-
-                    b.ToTable("Staff", (string)null);
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
-            modelBuilder.Entity("ServiceStaff", b =>
+            modelBuilder.Entity("KuaförRandevuSistemi.Models.Service", b =>
                 {
-                    b.HasOne("KuaförRandevuSistemi.Models.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KuaförRandevuSistemi.Models.Staff", null)
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Services")
+                        .HasForeignKey("StaffId");
                 });
 
             modelBuilder.Entity("KuaförRandevuSistemi.Models.Staff", b =>
                 {
-                    b.HasOne("KuaförRandevuSistemi.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("KuaförRandevuSistemi.Models.Staff", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KuaförRandevuSistemi.Models.Service", "Specialty")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Specialty");
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

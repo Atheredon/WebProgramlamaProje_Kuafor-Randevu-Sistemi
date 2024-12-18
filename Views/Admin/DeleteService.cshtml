@@ -1,0 +1,15 @@
+﻿@model IEnumerable<KuaförRandevuSistemi.Models.Service>
+
+<h1>Remove Service</h1>
+<form method="post" action="/Admin/RemoveService">
+    <div class="form-group">
+        <label for="ServiceId">Select a service to remove:</label>
+        <select name="ServiceId" id="ServiceId" class="form-control" required>
+            @foreach (var service in Model)
+            {
+                <option value="@service.Id">@service.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-danger">Remove</button>
+</form>

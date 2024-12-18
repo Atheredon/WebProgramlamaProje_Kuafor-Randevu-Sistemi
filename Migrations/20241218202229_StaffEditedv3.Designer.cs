@@ -2,6 +2,7 @@
 using KuaförRandevuSistemi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KuaförRandevuSistemi.Migrations
 {
     [DbContext(typeof(SalonDbContext))]
-    partial class SalonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241218202229_StaffEditedv3")]
+    partial class StaffEditedv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +61,11 @@ namespace KuaförRandevuSistemi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -85,7 +93,9 @@ namespace KuaförRandevuSistemi.Migrations
 
                     b.ToTable("Users");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator().HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("ServiceStaff", b =>
@@ -112,7 +122,7 @@ namespace KuaförRandevuSistemi.Migrations
 
                     b.HasIndex("SpecialtyId");
 
-                    b.ToTable("Staff", (string)null);
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("ServiceStaff", b =>
@@ -132,12 +142,6 @@ namespace KuaförRandevuSistemi.Migrations
 
             modelBuilder.Entity("KuaförRandevuSistemi.Models.Staff", b =>
                 {
-                    b.HasOne("KuaförRandevuSistemi.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("KuaförRandevuSistemi.Models.Staff", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KuaförRandevuSistemi.Models.Service", "Specialty")
                         .WithMany()
                         .HasForeignKey("SpecialtyId")

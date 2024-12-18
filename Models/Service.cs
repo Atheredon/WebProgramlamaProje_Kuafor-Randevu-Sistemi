@@ -21,7 +21,5 @@ namespace KuaförRandevuSistemi.Models
         [Required]
         public int Price { get; set; }
 
-        
-        public virtual ICollection<Staff> Staff { get; set; }
     }
 }
