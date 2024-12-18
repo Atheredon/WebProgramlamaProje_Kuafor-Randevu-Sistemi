@@ -1,0 +1,65 @@
+﻿@model List<KuaförRandevuSistemi.Models.Staff>
+
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Staff Members</h1>
+
+    <!-- Success or Error Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Add New Staff Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-primary" href="/Admin/AddStaff">Add New Staff</a>
+    </div>
+
+    <!-- Staff Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Specialty</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in Model)
+            {
+                <tr>
+                    <td>@staff.Name @staff.Surname</td>
+                    <td>@staff.Email</td>
+                    <td>@staff.Specialty</td>
+                    <td>
+                        <!-- Edit Button -->
+                        <a class="btn btn-warning btn-sm me-2" href="/Admin/EditStaff/@staff.Id">Edit</a>
+
+                        <!-- Remove Button -->
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(@staff.Id, '@staff.Name @staff.Surname')">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function confirmDelete(staffId, staffName) {
+        if (confirm(`Are you sure you want to delete the staff member "${staffName}"?`)) {
+            // Redirect to the delete action
+            window.location.href = `/Admin/DeleteStaff?id=${staffId}`;
+        }
+    }
+</script>

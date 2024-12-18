@@ -21,11 +21,21 @@ namespace KuaförRandevuSistemi.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Define relationships or seed data here if needed
+            modelBuilder.Entity<Staff>().ToTable("Staff");
+
+            modelBuilder.Entity<Staff>()
+                .HasOne(s => s.Specialty)
+                .WithMany()
+                .HasForeignKey(s => s.SpecialtyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Staff>()
                 .HasMany(s => s.Services)
-                .WithMany(s => s.Staff)
+                .WithMany()
                 .UsingEntity(j => j.ToTable("StaffServices"));
         }
+
+
+
     }
 }

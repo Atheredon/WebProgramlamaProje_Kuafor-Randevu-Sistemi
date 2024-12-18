@@ -19,6 +19,14 @@ namespace KuaförRandevuSistemi.Controllers
                 {
                     using (var db = new SalonDbContext())
                     {
+                        // Check if the email is already registered
+                        if (db.Users.Any(u => u.Email == user.Email))
+                        {
+                            TempData["ErrorMessage"] = "Email is already registered.";
+                            return View(user); // Return the same view with the error message
+                        }
+
+                        // Save the user to the database
                         db.Users.Add(user);
                         db.SaveChanges();
                     }
@@ -33,6 +41,7 @@ namespace KuaförRandevuSistemi.Controllers
                 {
                     // Log error and display a message
                     TempData["ErrorMessage"] = "An error occurred. Please try again.";
+                    Console.WriteLine(ex.Message);
                 }
             }
             else

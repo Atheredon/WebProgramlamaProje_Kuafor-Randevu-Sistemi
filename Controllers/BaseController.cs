@@ -5,7 +5,7 @@ public class BaseController : Controller
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        // Restore session from cookies if session is empty
+        // Check and restore session data
         if (HttpContext.Session.GetString("UserId") == null)
         {
             var userId = Request.Cookies["UserId"];
@@ -20,7 +20,7 @@ public class BaseController : Controller
             }
         }
 
-        // Populate ViewData for layout rendering
+        // Populate ViewData
         ViewData["UserId"] = HttpContext.Session.GetString("UserId");
         ViewData["UserRole"] = HttpContext.Session.GetString("UserRole");
         ViewData["UserName"] = HttpContext.Session.GetString("UserName");
