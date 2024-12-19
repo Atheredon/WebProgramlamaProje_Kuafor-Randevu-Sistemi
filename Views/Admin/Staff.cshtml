@@ -41,13 +41,20 @@
                 <tr>
                     <td>@staff.Name @staff.Surname</td>
                     <td>@staff.Email</td>
-                    <td>@staff.Specialty</td>
+                    @if(staff.Specialty == null)
+                    {
+                        <td>None</td>
+                    }
+                    else
+                    {
+                        <td>@staff.Specialty.Name</td>
+                    }
                     <td>
                         <!-- Edit Button -->
                         <a class="btn btn-warning btn-sm me-2" href="/Admin/EditStaff/@staff.Id">Edit</a>
 
                         <!-- Remove Button -->
-                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(@staff.Id, '@staff.Name @staff.Surname')">Remove</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(@staff.Id, '@staff.Name @staff.Surname')">Delete</button>
                     </td>
                 </tr>
             }

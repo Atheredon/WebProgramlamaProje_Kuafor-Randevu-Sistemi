@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KuaförRandevuSistemi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+662ad4bf798a31729cefda70b0f9ec95a4016083")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eee64f723313b0805f46ec5da8b0581cc9008bce")]
 [assembly: System.Reflection.AssemblyProductAttribute("KuaförRandevuSistemi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KuaförRandevuSistemi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

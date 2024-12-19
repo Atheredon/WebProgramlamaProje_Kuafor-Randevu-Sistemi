@@ -132,8 +132,8 @@ namespace KuaförRandevuSistemi.Controllers
         {
             using (var db = new SalonDbContext())
             {
-                var staffMembers = db.Staffs.ToList();
-                return View(staffMembers);
+                var staff = db.Set<Staff>().Include(s => s.Specialty).Include(s => s.Services).ToList();
+                return View(staff);
             }
         }
 
@@ -148,26 +148,30 @@ namespace KuaförRandevuSistemi.Controllers
             return View(new Staff());
         }
         [HttpPost]
-        public IActionResult AddStaff(Staff staff, int? specialtyId, List<int> serviceIds)
+        public IActionResult AddStaff(Staff staff, int? SpecialtyId, List<int> ServiceIds)
         {
             if (ModelState.IsValid)
             {
                 using (var db = new SalonDbContext())
                 {
-                    // Set Specialty
-                    staff.Specialty = specialtyId.HasValue ? db.Services.FirstOrDefault(s => s.Id == specialtyId) : null;
+                    staff.Role = "Staff";
 
-                    // Set Services
-                    staff.Services = db.Services.Where(s => serviceIds.Contains(s.Id)).ToList();
+                    if (SpecialtyId.HasValue)
+                    {
+                        staff.Specialty = db.Services.FirstOrDefault(s => s.Id == SpecialtyId);
+                    }
 
-                    db.Staffs.Add(staff);
+                    staff.Services = db.Services.Where(s => ServiceIds.Contains(s.Id)).ToList();
+
+                    db.Set<Staff>().Add(staff);
                     db.SaveChanges();
                 }
 
                 TempData["SuccessMessage"] = "Staff member added successfully!";
                 return RedirectToAction("Staff");
             }
-
+            Console.WriteLine("Model state is invalid.");
+            Console.WriteLine(staff.Id + " " + staff.Name + " " + staff.Surname + " " + staff.Email + " " + staff.Role + " ");
             using (var db = new SalonDbContext())
             {
                 ViewBag.Services = db.Services.ToList();
@@ -177,43 +181,47 @@ namespace KuaförRandevuSistemi.Controllers
         }
 
 
-
         [HttpGet]
-        public IActionResult RemoveStaff()
+        public IActionResult DeleteStaff(int id)
         {
             using (var db = new SalonDbContext())
             {
-                var staff = db.Staffs.ToList();
-                return View(staff);
-            }
-        }
-        [HttpPost]
-        public IActionResult RemoveStaff(int staffId)
-        {
-            using (var db = new SalonDbContext())
-            {
-                var staff = db.Staffs.Find(staffId);
-                if (staff != null)
-                {
-                    db.Staffs.Remove(staff);
-                    db.SaveChanges();
-                    TempData["SuccessMessage"] = "Staff member " + staff.Name + " removed successfully!";
-                }
-                else
+                // Find the staff member
+                var staff = db.Set<Staff>()
+                              .Include(s => s.Services)
+                              .FirstOrDefault(s => s.Id == id);
+
+                if (staff == null)
                 {
                     TempData["ErrorMessage"] = "Staff member not found.";
+                    return RedirectToAction("Staff");
                 }
-            }
 
-            return RedirectToAction("Staff");
+                // Remove staff
+                db.Set<Staff>().Remove(staff);
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Staff member deleted successfully!";
+                return RedirectToAction("Staff");
+            }
         }
+
 
         [HttpGet]
         public IActionResult EditStaff(int id)
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             using (var db = new SalonDbContext())
             {
-                var staff = db.Staffs.Include(s => s.Services).FirstOrDefault(s => s.Id == id);
+                var staff = db.Set<Staff>()
+                              .Include(s => s.Specialty)
+                              .Include(s => s.Services)
+                              .FirstOrDefault(s => s.Id == id);
+
                 if (staff == null)
                 {
                     TempData["ErrorMessage"] = "Staff member not found.";
@@ -225,40 +233,62 @@ namespace KuaförRandevuSistemi.Controllers
             }
         }
         [HttpPost]
-        public IActionResult EditStaff(Staff staff, int? specialtyId, List<int> serviceIds)
+        public IActionResult EditStaff(Staff staff, int? SpecialtyId, List<int> ServiceIds)
         {
             if (ModelState.IsValid)
             {
                 using (var db = new SalonDbContext())
                 {
-                    var existingStaff = db.Staffs.Include(s => s.Services).FirstOrDefault(s => s.Id == staff.Id);
-                    if (existingStaff != null)
-                    {
-                        existingStaff.Name = staff.Name;
-                        existingStaff.Surname = staff.Surname;
-                        existingStaff.Email = staff.Email;
+                    var existingStaff = db.Set<Staff>()
+                                          .Include(s => s.Services)
+                                          .FirstOrDefault(s => s.Id == staff.Id);
 
-                        existingStaff.Specialty = specialtyId.HasValue ? db.Services.FirstOrDefault(s => s.Id == specialtyId) : null;
-                        existingStaff.Services = db.Services.Where(s => serviceIds.Contains(s.Id)).ToList();
-
-                        db.SaveChanges();
-                        TempData["SuccessMessage"] = "Staff member updated successfully!";
-                    }
-                    else
+                    if (existingStaff == null)
                     {
                         TempData["ErrorMessage"] = "Staff member not found.";
+                        return RedirectToAction("Staff");
                     }
+
+                    // Update basic staff details
+                    existingStaff.Name = staff.Name;
+                    existingStaff.Surname = staff.Surname;
+                    existingStaff.Email = staff.Email;
+
+                    // Update specialty
+                    existingStaff.Specialty = SpecialtyId.HasValue ? db.Services.FirstOrDefault(s => s.Id == SpecialtyId) : null;
+
+                    // Update services
+                    existingStaff.Services.Clear(); // Clear existing relationships
+                    if (ServiceIds != null && ServiceIds.Any())
+                    {
+                        existingStaff.Services = db.Services.Where(s => ServiceIds.Contains(s.Id)).ToList();
+                    }
+
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Staff member updated successfully!";
+                    return RedirectToAction("Staff");
                 }
-
-                return RedirectToAction("Staff");
             }
-
             using (var db = new SalonDbContext())
             {
                 ViewBag.Services = db.Services.ToList();
             }
-
             return View(staff);
+        }
+
+
+        public IActionResult Appointments()
+        {
+            using (var db = new SalonDbContext())
+            {
+                var appointments = db.Appointments
+                    .Include(a => a.Service)
+                    .Include(a => a.Staff)
+                    .Include(a => a.Customer)
+                    .ToList();
+                return View(appointments);
+            }
         }
 
 
