@@ -1,0 +1,34 @@
+﻿@model List<KuaförRandevuSistemi.Models.Appointment>
+
+<h1>Manage Appointments</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Staff</th>
+            <th>Date & Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.Customer.Name @appointment.Customer.Surname</td>
+                <td>@appointment.Service.Name</td>
+                <td>@appointment.Staff.Name @appointment.Staff.Surname</td>
+                <td>@appointment.AppointmentDate</td>
+                <td>@appointment.Status</td>
+                <td>
+                    <form method="post" action="/Admin/CancelAppointment">
+                        <input type="hidden" name="id" value="@appointment.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

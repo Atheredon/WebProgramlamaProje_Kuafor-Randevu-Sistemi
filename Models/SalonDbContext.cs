@@ -7,6 +7,7 @@ namespace KuaförRandevuSistemi.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,14 +22,20 @@ namespace KuaförRandevuSistemi.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Staff>().ToTable("Staff");
+            // TPH Discriminator column setup
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<User>("User")
+                .HasValue<Staff>("Staff");
 
+            // One-to-one or one-to-none relationship between Staff and Specialty
             modelBuilder.Entity<Staff>()
                 .HasOne(s => s.Specialty)
                 .WithMany()
                 .HasForeignKey(s => s.SpecialtyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Many-to-many relationship between Staff and Services
             modelBuilder.Entity<Staff>()
                 .HasMany(s => s.Services)
                 .WithMany()

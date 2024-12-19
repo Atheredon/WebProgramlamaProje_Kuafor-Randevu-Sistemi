@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Book an Appointment</h1>
+
+<form method="post" action="/Customer/BookAppointment">
+    <div class="mb-3">
+        <label for="ServiceId" class="form-label">Service</label>
+        <select class="form-control" id="ServiceId" name="ServiceId" onchange="updateDetails()" required>
+            <option value="" data-duration="0" data-price="0">Select a Service</option>
+            @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
+            {
+                <option value="@service.Id" data-duration="@service.Duration" data-price="@service.Price">
+                    @service.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="StaffId" class="form-label">Staff</label>
+        <select class="form-control" id="StaffId" name="StaffId" required>
+            @foreach (var staff in ViewBag.Staff as List<KuaförRandevuSistemi.Models.Staff>)
+            {
+                <option value="@staff.Id">@staff.Name @staff.Surname</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="AppointmentDate" class="form-label">Date and Time</label>
+        <input type="datetime-local" class="form-control" id="AppointmentDate" name="AppointmentDate" required />
+    </div>
+
+    <!-- Total Time and Cost -->
+    <div class="mb-3">
+        <p id="Details" class="fw-bold">Total Time: 0 minutes | Total Cost: $0</p>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Book Appointment</button>
+</form>
+
+<script>
+    function updateDetails() {
+        const serviceDropdown = document.getElementById("ServiceId");
+        const selectedOption = serviceDropdown.options[serviceDropdown.selectedIndex];
+        const duration = selectedOption.getAttribute("data-duration");
+        const price = selectedOption.getAttribute("data-price");
+
+        const details = document.getElementById("Details");
+        details.innerText = `Total Time: ${duration} minutes | Total Cost: $${price}`;
+    }
+</script>
