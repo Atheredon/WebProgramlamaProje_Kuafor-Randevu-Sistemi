@@ -154,6 +154,12 @@ namespace KuaförRandevuSistemi.Controllers
             {
                 using (var db = new SalonDbContext())
                 {
+                    if (db.Users.Any(u => u.Email == staff.Email))
+                    {
+                        TempData["ErrorMessage"] = "This email is already registered.";
+                        return View(staff);
+                    }
+
                     staff.Role = "Staff";
 
                     if (SpecialtyId.HasValue)
