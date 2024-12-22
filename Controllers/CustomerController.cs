@@ -1,5 +1,6 @@
 ﻿using KuaförRandevuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KuaförRandevuSistemi.Controllers
 {
@@ -21,67 +22,60 @@ namespace KuaförRandevuSistemi.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult BookAppointment(int ServiceId, int StaffId, DateTime AppointmentDate)
+        public IActionResult BookAppointment(int ServiceId, int StaffId, DateTime AppointmentDate, string TimeSlot)
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
+            try
             {
-                TempData["ErrorMessage"] = "Please log in to book an appointment.";
-                return RedirectToAction("Login", "Account");
+                var userId = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    TempData["ErrorMessage"] = "Please log in to book an appointment.";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Ensure valid date and time slot
+                if (AppointmentDate == default(DateTime) || string.IsNullOrEmpty(TimeSlot))
+                {
+                    TempData["ErrorMessage"] = "Please select a valid date and time slot.";
+                    return RedirectToAction("BookAppointment");
+                }
+
+                var selectedTime = DateTime.Parse($"{AppointmentDate:yyyy-MM-dd} {TimeSlot}").ToUniversalTime();
+
+                using (var db = new SalonDbContext())
+                {
+                    var service = db.Services.FirstOrDefault(s => s.Id == ServiceId);
+                    if (service == null)
+                    {
+                        TempData["ErrorMessage"] = "Service not found.";
+                        return RedirectToAction("BookAppointment");
+                    }
+
+                    // Create a new appointment
+                    var appointment = new Appointment
+                    {
+                        ServiceId = ServiceId,
+                        StaffId = StaffId,
+                        AppointmentDate = selectedTime,
+                        CustomerId = int.Parse(userId),
+                        Status = "Pending"
+                    };
+
+                    db.Appointments.Add(appointment);
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Appointment booked successfully!";
+                    return RedirectToAction("MyAppointments");
+                }
             }
-
-            using (var db = new SalonDbContext())
+            catch (Exception ex)
             {
-                var service = db.Services.FirstOrDefault(s => s.Id == ServiceId);
-                if (service == null)
-                {
-                    TempData["ErrorMessage"] = "Service not found.";
-                    return RedirectToAction("BookAppointment");
-                }
-
-                // Calculate end time of the service
-                var appointmentEndTime = AppointmentDate.ToUniversalTime().AddMinutes(service.Duration);
-
-                // Check if the selected staff has overlapping appointments
-                var overlappingAppointments = db.Appointments
-                    .Where(a => a.StaffId == StaffId &&
-                                a.AppointmentDate < appointmentEndTime &&
-                                a.AppointmentDate.AddMinutes(a.Service.Duration) > AppointmentDate.ToUniversalTime())
-                    .Any();
-
-                if (overlappingAppointments)
-                {
-                    TempData["ErrorMessage"] = "The selected staff is not available at this time.";
-                    return RedirectToAction("BookAppointment");
-                }
-
-                // Check if the shop is open
-                var openingTime = new TimeSpan(9, 0, 0); // 9:00 AM
-                var closingTime = new TimeSpan(18, 0, 0); // 6:00 PM
-
-                if (AppointmentDate.TimeOfDay < openingTime || appointmentEndTime.TimeOfDay > closingTime)
-                {
-                    TempData["ErrorMessage"] = "The appointment time is outside of shop hours.";
-                    return RedirectToAction("BookAppointment");
-                }
-
-                // Create a new appointment
-                var appointment = new Appointment
-                {
-                    ServiceId = ServiceId,
-                    StaffId = StaffId,
-                    AppointmentDate = AppointmentDate.ToUniversalTime(),
-                    CustomerId = int.Parse(userId),
-                    Status = "Pending"
-                };
-
-                db.Appointments.Add(appointment);
-                db.SaveChanges();
-
-                TempData["SuccessMessage"] = "Appointment booked successfully!";
-                return RedirectToAction("MyAppointments");
+                Console.WriteLine($"Error booking appointment: {ex.Message}");
+                TempData["ErrorMessage"] = "An error occurred while booking the appointment.";
+                return RedirectToAction("BookAppointment");
             }
         }
+
 
         [HttpGet]
         public JsonResult GetAvailableSlots(int staffId, DateTime date, int duration)
@@ -90,8 +84,17 @@ namespace KuaförRandevuSistemi.Controllers
             {
                 var openingTime = new TimeSpan(9, 0, 0); // 9:00 AM
                 var closingTime = new TimeSpan(18, 0, 0); // 6:00 PM
+                var slotDuration = 15; // 15 minutes
+                var totalSlots = (int)((closingTime - openingTime).TotalMinutes / slotDuration); // Total number of slots
 
-                // Ensure the date is treated as UTC
+                // Initialize boolean list
+                var available = new bool[totalSlots];
+                for (int i = 0; i < totalSlots; i++)
+                {
+                    available[i] = true;
+                }
+
+                // Ensure date is UTC
                 date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
                 // Fetch all appointments for the selected staff on the given date
@@ -99,31 +102,52 @@ namespace KuaförRandevuSistemi.Controllers
                     .Where(a => a.StaffId == staffId && a.AppointmentDate.Date == date.Date)
                     .Select(a => new
                     {
-                        Start = a.AppointmentDate.ToUniversalTime().TimeOfDay,
-                        End = a.AppointmentDate.ToUniversalTime().TimeOfDay.Add(TimeSpan.FromMinutes(a.Service.Duration))
+                        StartIndex = (int)((a.AppointmentDate.TimeOfDay.Subtract(openingTime)).TotalMinutes / slotDuration),
+                        SlotCount = (int)Math.Ceiling(a.Service.Duration / (double)slotDuration)
                     })
                     .ToList();
 
-                // Generate 15-minute slots
-                var slots = new List<TimeSpan>();
-                var currentTime = openingTime;
-
-                while (currentTime + TimeSpan.FromMinutes(duration) <= closingTime)
+                // Mark slots as unavailable
+                foreach (var appointment in appointments)
                 {
-                    var isAvailable = !appointments.Any(a =>
-                        currentTime < a.End && currentTime + TimeSpan.FromMinutes(duration) > a.Start);
+                    Console.WriteLine(appointment.SlotCount + "  " + appointment.StartIndex);
+                    for (int i = 0; i < appointment.SlotCount; i++)
+                    {
+                        int indexToMark = appointment.StartIndex + i;
+                        Console.WriteLine(indexToMark + "  " + appointment.StartIndex);
+                        if (indexToMark >= 0 && indexToMark < totalSlots)
+                        {
+                            available[indexToMark] = false;
+                        }
+                    }
+                }
+
+                // Check for consecutive available slots
+                var availableStartTimes = new List<TimeSpan>();
+                for (int i = 0; i <= totalSlots - (duration / slotDuration); i++)
+                {
+                    bool isAvailable = true;
+                    for (int j = 0; j < duration / slotDuration; j++)
+                    {
+                        if (!available[i + j])
+                        {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
 
                     if (isAvailable)
                     {
-                        slots.Add(currentTime);
+                        availableStartTimes.Add(openingTime.Add(TimeSpan.FromMinutes(i * slotDuration)));
                     }
-
-                    currentTime = currentTime.Add(TimeSpan.FromMinutes(15));
                 }
 
-                return Json(slots.Select(s => s.ToString(@"hh\:mm"))); // Return slots as "hh:mm"
+                // Return available start times as "hh:mm"
+                foreach (var musaitlik in available) Console.WriteLine(musaitlik);
+                return Json(availableStartTimes.Select(s => s.ToString(@"hh\:mm")));
             }
         }
+
 
 
 
