@@ -82,19 +82,19 @@ namespace KuaförRandevuSistemi.Controllers
         {
             using (var db = new SalonDbContext())
             {
+                int slotDuration = 15; // 15-minute intervals
                 var openingTime = new TimeSpan(9, 0, 0); // 9:00 AM
                 var closingTime = new TimeSpan(18, 0, 0); // 6:00 PM
-                var slotDuration = 15; // 15 minutes
-                var totalSlots = (int)((closingTime - openingTime).TotalMinutes / slotDuration); // Total number of slots
+                int totalSlots = (int)((closingTime - openingTime).TotalMinutes / slotDuration); // Total number of slots
 
-                // Initialize boolean list
+                // Initialize boolean list for availability
                 var available = new bool[totalSlots];
                 for (int i = 0; i < totalSlots; i++)
                 {
                     available[i] = true;
                 }
 
-                // Ensure date is UTC
+                // Convert input date to UTC
                 date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
                 // Fetch all appointments for the selected staff on the given date
@@ -102,19 +102,19 @@ namespace KuaförRandevuSistemi.Controllers
                     .Where(a => a.StaffId == staffId && a.AppointmentDate.Date == date.Date)
                     .Select(a => new
                     {
-                        StartIndex = (int)((a.AppointmentDate.TimeOfDay.Subtract(openingTime)).TotalMinutes / slotDuration),
-                        SlotCount = (int)Math.Ceiling(a.Service.Duration / (double)slotDuration)
-                    })
-                    .ToList();
+                        StartTime = a.AppointmentDate.ToLocalTime().TimeOfDay,
+                        Duration = a.Service.Duration
+                    });
 
                 // Mark slots as unavailable
                 foreach (var appointment in appointments)
                 {
-                    Console.WriteLine(appointment.SlotCount + "  " + appointment.StartIndex);
-                    for (int i = 0; i < appointment.SlotCount; i++)
+                    int startIndex = (int)((appointment.StartTime - openingTime).TotalMinutes / slotDuration);
+                    int slotsToMark = (int)Math.Ceiling(appointment.Duration / (double)slotDuration);
+
+                    for (int i = 0; i < slotsToMark; i++)
                     {
-                        int indexToMark = appointment.StartIndex + i;
-                        Console.WriteLine(indexToMark + "  " + appointment.StartIndex);
+                        int indexToMark = startIndex + i;
                         if (indexToMark >= 0 && indexToMark < totalSlots)
                         {
                             available[indexToMark] = false;
@@ -123,13 +123,15 @@ namespace KuaförRandevuSistemi.Controllers
                 }
 
                 // Check for consecutive available slots
-                var availableStartTimes = new List<TimeSpan>();
+                var availableStartTimes = new List<int>();
                 for (int i = 0; i <= totalSlots - (duration / slotDuration); i++)
                 {
                     bool isAvailable = true;
+
+                    // Check all slots needed for this service
                     for (int j = 0; j < duration / slotDuration; j++)
                     {
-                        if (!available[i + j])
+                        if (i + j >= totalSlots || !available[i + j])
                         {
                             isAvailable = false;
                             break;
@@ -138,13 +140,23 @@ namespace KuaförRandevuSistemi.Controllers
 
                     if (isAvailable)
                     {
-                        availableStartTimes.Add(openingTime.Add(TimeSpan.FromMinutes(i * slotDuration)));
+                        // Ensure no collisions with adjacent appointments
+                        int endSlot = i + (duration / slotDuration) - 1;
+                        if (endSlot < totalSlots && available[endSlot])
+                        {
+                            availableStartTimes.Add((int)(openingTime.TotalMinutes + i * slotDuration));
+                        }
                     }
                 }
 
-                // Return available start times as "hh:mm"
-                foreach (var musaitlik in available) Console.WriteLine(musaitlik);
-                return Json(availableStartTimes.Select(s => s.ToString(@"hh\:mm")));
+
+                // Convert available start times to "HH:mm" format
+                return Json(availableStartTimes.Select(t =>
+                {
+                    int hours = t / 60;
+                    int minutes = t % 60;
+                    return $"{hours:D2}:{minutes:D2}";
+                }));
             }
         }
 
