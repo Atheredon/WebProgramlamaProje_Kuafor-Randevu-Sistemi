@@ -161,6 +161,44 @@ namespace KuaförRandevuSistemi.Controllers
         }
 
 
+        public IActionResult MyAppointments()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["ErrorMessage"] = "Please log in to view your appointments.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var customerId = int.Parse(userId);
+                var now = DateTime.UtcNow;
+
+                // Fetch future appointments with related data
+                var futureAppointments = db.Appointments
+                    .Include(a => a.Service) // Include Service details
+                    .Include(a => a.Staff)   // Include Staff details
+                    .Where(a => a.CustomerId == customerId && a.AppointmentDate > now)
+                    .OrderBy(a => a.AppointmentDate)
+                    .ToList();
+
+                // Fetch past appointments with related data
+                var pastAppointments = db.Appointments
+                    .Include(a => a.Service) // Include Service details
+                    .Include(a => a.Staff)   // Include Staff details
+                    .Where(a => a.CustomerId == customerId && a.AppointmentDate <= now)
+                    .OrderByDescending(a => a.AppointmentDate)
+                    .ToList();
+
+                ViewData["FutureAppointments"] = futureAppointments;
+                ViewData["PastAppointments"] = pastAppointments;
+            }
+
+            return View();
+        }
+
+
 
 
 

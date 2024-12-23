@@ -1,0 +1,68 @@
+﻿@{
+    var futureAppointments = ViewData["FutureAppointments"] as List<KuaförRandevuSistemi.Models.Appointment> ?? new List<KuaförRandevuSistemi.Models.Appointment>();
+    var pastAppointments = ViewData["PastAppointments"] as List<KuaförRandevuSistemi.Models.Appointment> ?? new List<KuaförRandevuSistemi.Models.Appointment>();
+}
+
+<h1>My Appointments</h1>
+
+<!-- Future Appointments -->
+<h2>Upcoming Appointments</h2>
+@if (futureAppointments.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date & Time</th>
+                <th>Service</th>
+                <th>Staff</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in futureAppointments)
+            {
+                <tr>
+                    <td>@appointment.AppointmentDate.ToLocalTime()</td>
+                    <td>@appointment.Service?.Name</td>
+                    <td>@appointment.Staff?.Name @appointment.Staff?.Surname</td>
+                    <td>@appointment.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No upcoming appointments.</p>
+}
+
+<!-- Past Appointments -->
+<h2>Past Appointments</h2>
+@if (pastAppointments.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date & Time</th>
+                <th>Service</th>
+                <th>Staff</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in pastAppointments)
+            {
+                <tr>
+                    <td>@appointment.AppointmentDate.ToLocalTime()</td>
+                    <td>@appointment.Service?.Name</td>
+                    <td>@appointment.Staff?.Name @appointment.Staff?.Surname</td>
+                    <td>@appointment.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No past appointments.</p>
+}
