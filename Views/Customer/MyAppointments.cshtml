@@ -26,6 +26,15 @@
                     <td>@appointment.Service?.Name</td>
                     <td>@appointment.Staff?.Name @appointment.Staff?.Surname</td>
                     <td>@appointment.Status</td>
+                    <td>
+                        <form method="post" action="/Customer/CancelAppointment" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                            <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="/Customer/RebookAppointment?appointmentId=@appointment.Id" class="btn btn-primary btn-sm">Rebook</a>
+                    </td>
                 </tr>
             }
         </tbody>

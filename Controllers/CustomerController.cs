@@ -99,7 +99,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                 // Fetch all appointments for the selected staff on the given date
                 var appointments = db.Appointments
-                    .Where(a => a.StaffId == staffId && a.AppointmentDate.Date == date.Date)
+                    .Where(a => a.StaffId == staffId && a.AppointmentDate.Date == date.Date && a.Status != "Cancelled")
                     .Select(a => new
                     {
                         StartTime = a.AppointmentDate.ToLocalTime().TimeOfDay,
@@ -198,6 +198,70 @@ namespace KuaförRandevuSistemi.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public IActionResult CancelAppointment(int appointmentId)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["ErrorMessage"] = "Please log in to manage your appointments.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var appointment = db.Appointments.FirstOrDefault(a => a.Id == appointmentId && a.CustomerId == int.Parse(userId));
+                if (appointment == null)
+                {
+                    TempData["ErrorMessage"] = "Appointment not found.";
+                    return RedirectToAction("MyAppointments");
+                }
+
+                if (appointment.AppointmentDate <= DateTime.UtcNow)
+                {
+                    TempData["ErrorMessage"] = "You cannot cancel a past or ongoing appointment.";
+                    return RedirectToAction("MyAppointments");
+                }
+
+                appointment.Status = "Cancelled";
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Appointment canceled successfully.";
+                return RedirectToAction("MyAppointments");
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult RebookAppointment(int appointmentId)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["ErrorMessage"] = "Please log in to manage your appointments.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var appointment = db.Appointments
+                    .Include(a => a.Service)
+                    .Include(a => a.Staff)
+                    .FirstOrDefault(a => a.Id == appointmentId && a.CustomerId == int.Parse(userId));
+
+                if (appointment == null)
+                {
+                    TempData["ErrorMessage"] = "Appointment not found.";
+                    return RedirectToAction("MyAppointments");
+                }
+
+                // Pass appointment data to the booking view
+                ViewBag.RebookServiceId = appointment.Service.Id;
+                ViewBag.RebookStaffId = appointment.Staff.Id;
+                return View("BookAppointment");
+            }
+        }
 
 
 
