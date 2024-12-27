@@ -1,0 +1,27 @@
+﻿<h1>@ViewBag.Customer.Name @ViewBag.Customer.Surname</h1>
+<p>Email: @ViewBag.Customer.Email</p>
+
+<h2>Appointment History</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date & Time</th>
+            <th>Service</th>
+            <th>Staff</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.AppointmentDate.ToLocalTime()</td>
+                <td>@appointment.Service.Name</td>
+                <td>@appointment.Staff.Name @appointment.Staff.Surname</td>
+                <td>@appointment.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary mt-3" href="/Admin/Customers">Return to Customers</a>

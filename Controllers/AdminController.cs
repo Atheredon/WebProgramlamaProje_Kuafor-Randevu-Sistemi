@@ -176,8 +176,6 @@ namespace KuaförRandevuSistemi.Controllers
                 TempData["SuccessMessage"] = "Staff member added successfully!";
                 return RedirectToAction("Staff");
             }
-            Console.WriteLine("Model state is invalid.");
-            Console.WriteLine(staff.Id + " " + staff.Name + " " + staff.Surname + " " + staff.Email + " " + staff.Role + " ");
             using (var db = new SalonDbContext())
             {
                 ViewBag.Services = db.Services.ToList();
@@ -281,6 +279,176 @@ namespace KuaförRandevuSistemi.Controllers
                 ViewBag.Services = db.Services.ToList();
             }
             return View(staff);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleAvailability(int staffId)
+        {
+            using (var db = new SalonDbContext())
+            {
+                var staff = db.Staffs.FirstOrDefault(s => s.Id == staffId);
+                if (staff == null)
+                {
+                    TempData["ErrorMessage"] = "Staff not found.";
+                    return RedirectToAction("Staff");
+                }
+
+                // Toggle availability
+                staff.Available = !staff.Available;
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = $"Staff availability updated successfully. {(staff.Available ? "Available" : "Unavailable")}";
+                return RedirectToAction("Staff");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Analytics()
+        {
+            using (var db = new SalonDbContext())
+            {
+                var now = DateTime.UtcNow; // Use UTC explicitly
+                var startOfWeek = DateTime.SpecifyKind(now.AddDays(-(int)now.DayOfWeek), DateTimeKind.Utc); // Start of week in UTC
+                var startOfMonth = DateTime.SpecifyKind(new DateTime(now.Year, now.Month, 1), DateTimeKind.Utc); // Start of month in UTC
+
+                // Total appointments
+                var totalAppointments = db.Appointments.Count();
+                var weeklyAppointments = db.Appointments
+                    .Where(a => a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now)
+                    .Count();
+                var monthlyAppointments = db.Appointments
+                    .Where(a => a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now)
+                    .Count();
+
+                // Total revenue
+                var totalRevenue = db.Appointments
+                    .Where(a => a.Status == "Confirmed")
+                    .Sum(a => a.Service.Price);
+                var weeklyRevenue = db.Appointments
+                    .Where(a => (a.Status == "Confirmed") && (a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now))
+                    .Sum(a => a.Service.Price);
+                var monthlyRevenue = db.Appointments
+                    .Where(a => (a.Status == "Confirmed") && (a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now))
+                    .Sum(a => a.Service.Price);
+
+                // Popular services
+                var popularServices = db.Services
+                    .Select(s => new
+                    {
+                        ServiceName = s.Name,
+                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id)
+                    })
+                    .OrderByDescending(s => s.Bookings)
+                    .Take(5)
+                    .ToList();
+                var weeklyPopularServices = db.Services
+                    .Select(s => new
+                    {
+                        ServiceName = s.Name,
+                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id && a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now && a.Status == "Confirmed")
+                    })
+                    .OrderByDescending(s => s.Bookings)
+                    .Take(5)
+                    .ToList();
+                var monthlyPopularServices = db.Services
+                    .Select(s => new
+                    {
+                        ServiceName = s.Name,
+                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id && a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now && a.Status == "Confirmed")
+                    })
+                    .OrderByDescending(s => s.Bookings)
+                    .Take(5)
+                    .ToList();
+
+                // Staff performance
+                var staffPerformance = db.Staffs
+                    .Select(s => new
+                    {
+                        StaffName = s.Name + " " + s.Surname,
+                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id)
+                    })
+                    .OrderByDescending(s => s.Appointments)
+                    .ToList();
+                var weeklyStaffPerformance = db.Staffs
+                    .Select(s => new
+                    {
+                        StaffName = s.Name + " " + s.Surname,
+                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id && a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now && a.Status == "Confirmed")
+                    })
+                    .OrderByDescending(s => s.Appointments)
+                    .ToList();
+                var monthlyStaffPerformance = db.Staffs
+                    .Select(s => new
+                    {
+                        StaffName = s.Name + " " + s.Surname,
+                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id && a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now && a.Status == "Confirmed")
+                    })
+                    .OrderByDescending(s => s.Appointments)
+                    .ToList();
+
+                // Pass data to the view
+                ViewBag.TotalAppointments = totalAppointments;
+                ViewBag.WeeklyAppointments = weeklyAppointments;
+                ViewBag.MonthlyAppointments = monthlyAppointments;
+
+                ViewBag.TotalRevenue = totalRevenue;
+                ViewBag.WeeklyRevenue = weeklyRevenue;
+                ViewBag.MonthlyRevenue = monthlyRevenue;
+
+                ViewBag.PopularServices = popularServices;
+                ViewBag.WeeklyPopularServices = weeklyPopularServices;
+                ViewBag.MonthlyPopularServices = monthlyPopularServices;
+
+                ViewBag.StaffPerformance = staffPerformance;
+                ViewBag.WeeklyStaffPerformance = weeklyStaffPerformance;
+                ViewBag.MonthlyStaffPerformance = monthlyStaffPerformance;
+
+                return View();
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult Customers()
+        {
+            using (var db = new SalonDbContext())
+            {
+                var customers = db.Users
+                    .Where(u => u.Role == "Customer")
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Name,
+                        c.Surname,
+                        c.Email
+                    })
+                    .ToList();
+
+                return View(customers);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CustomerDetails(int customerId)
+        {
+            using (var db = new SalonDbContext())
+            {
+                var customer = db.Users.FirstOrDefault(u => u.Id == customerId && u.Role == "Customer");
+                if (customer == null)
+                {
+                    TempData["ErrorMessage"] = "Customer not found.";
+                    return RedirectToAction("Customers");
+                }
+
+                var appointments = db.Appointments
+                    .Where(a => a.CustomerId == customerId)
+                    .Include(a => a.Service)
+                    .Include(a => a.Staff)
+                    .ToList();
+
+                ViewBag.Customer = customer;
+                return View(appointments);
+            }
         }
 
 

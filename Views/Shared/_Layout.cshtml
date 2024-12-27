@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 <head>
     <meta charset="utf-8">
@@ -31,7 +32,22 @@
                         @if (ViewData["UserRole"]?.ToString() == "Admin")
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Admin/Dashboard">Admin Panel</a>
+                                <a class="nav-link" href="/Admin/Services">Manage Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Staff">Manage Staffs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Analytics">Analytics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Customers">Customers</a>
+                            </li>
+                        }
+                        @if (ViewData["UserRole"]?.ToString() == "Staff")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Staff/ManageMyAppointments">Manage Appointments</a>
                             </li>
                         }
                     </ul>

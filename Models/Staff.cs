@@ -7,6 +7,7 @@ namespace KuaförRandevuSistemi.Models
     {
         public int? SpecialtyId { get; set; }
         public virtual Service? Specialty { get; set; }
+        public bool Available { get; set; } = true;
 
         public virtual ICollection<Service>? Services { get; set; }
     }

@@ -1,0 +1,218 @@
+﻿<h1>Analytics Dashboard</h1>
+
+<!-- Total Appointments and Revenue -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Appointments</h5>
+                <p class="card-text">@ViewBag.TotalAppointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Appointments This Week</h5>
+                <p class="card-text">@ViewBag.WeeklyAppointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Appointments This Month</h5>
+                <p class="card-text">@ViewBag.MonthlyAppointments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Revenue</h5>
+                <p class="card-text">@ViewBag.TotalRevenue ₺</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Revenue This Week</h5>
+                <p class="card-text">@ViewBag.WeeklyRevenue ₺</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Revenue This Month</h5>
+                <p class="card-text">@ViewBag.MonthlyRevenue ₺</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popular Services -->
+<h2>Popular Services</h2>
+<h3>Total</h3>
+@if (ViewBag.popularServices != null && ((IEnumerable<dynamic>)ViewBag.popularServices).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Bookings</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in ViewBag.popularServices)
+            {
+                <tr>
+                    <td>@service.ServiceName</td>
+                    <td>@service.Bookings</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for popular services.</p>
+}
+
+
+<h3>This Week</h3>
+@if (ViewBag.WeeklyPopularServices != null && ((IEnumerable<dynamic>)ViewBag.WeeklyPopularServices).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Bookings</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in ViewBag.WeeklyPopularServices)
+            {
+                <tr>
+                    <td>@service.ServiceName</td>
+                    <td>@service.Bookings</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for popular services this week.</p>
+}
+
+<h3>This Month</h3>
+@if (ViewBag.MonthlyPopularServices != null && ((IEnumerable<dynamic>)ViewBag.MonthlyPopularServices).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Bookings</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in ViewBag.MonthlyPopularServices)
+            {
+                <tr>
+                    <td>@service.ServiceName</td>
+                    <td>@service.Bookings</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for popular services this month.</p>
+}
+
+<!-- Staff Performance -->
+<h2>Staff Performance</h2>
+
+<h3>Total</h3>
+@if (ViewBag.staffPerformance != null && ((IEnumerable<dynamic>)ViewBag.staffPerformance).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Staff</th>
+                <th>Appointments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in ViewBag.staffPerformance)
+            {
+                <tr>
+                    <td>@staff.StaffName</td>
+                    <td>@staff.Appointments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for staff performance this week.</p>
+}
+
+<h3>This Week</h3>
+@if (ViewBag.WeeklyStaffPerformance != null && ((IEnumerable<dynamic>)ViewBag.WeeklyStaffPerformance).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Staff</th>
+                <th>Appointments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in ViewBag.WeeklyStaffPerformance)
+            {
+                <tr>
+                    <td>@staff.StaffName</td>
+                    <td>@staff.Appointments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for staff performance this week.</p>
+}
+
+<h3>This Month</h3>
+@if (ViewBag.MonthlyStaffPerformance != null && ((IEnumerable<dynamic>)ViewBag.MonthlyStaffPerformance).Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Staff</th>
+                <th>Appointments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in ViewBag.MonthlyStaffPerformance)
+            {
+                <tr>
+                    <td>@staff.StaffName</td>
+                    <td>@staff.Appointments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for staff performance this month.</p>
+}

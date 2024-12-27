@@ -32,6 +32,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Specialty</th>
+                <th>Is Avaiable</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -49,12 +50,37 @@
                     {
                         <td>@staff.Specialty.Name</td>
                     }
+                    @if(staff.Available)
+                    {
+                        <td>Available</td>
+                    }
+                    else
+                    {
+                        <td>Unavailable</td>
+                    }
                     <td>
                         <!-- Edit Button -->
                         <a class="btn btn-warning btn-sm me-2" href="/Admin/EditStaff/@staff.Id">Edit</a>
 
                         <!-- Remove Button -->
                         <button class="btn btn-danger btn-sm" onclick="confirmDelete(@staff.Id, '@staff.Name @staff.Surname')">Delete</button>
+
+                        <!-- Availablety Button -->
+                        @if (staff.Available)
+                        {
+                            <form method="post" action="/Admin/ToggleAvailability" class="d-inline">
+                                <input type="hidden" name="staffId" value="@staff.Id" />
+                                <button type="submit" class="btn btn-warning btn-sm">Time Off</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Admin/ToggleAvailability" class="d-inline">
+                                <input type="hidden" name="staffId" value="@staff.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Come Back</button>
+                            </form>
+                        }
+
                     </td>
                 </tr>
             }

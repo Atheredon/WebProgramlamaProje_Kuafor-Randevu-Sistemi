@@ -82,6 +82,11 @@ namespace KuaförRandevuSistemi.Controllers
         {
             using (var db = new SalonDbContext())
             {
+                var staff = db.Staffs.FirstOrDefault(s => s.Id == staffId);
+                if (staff == null || !staff.Available)
+                {
+                    return Json(new List<string>()); // No slots available
+                }
                 int slotDuration = 15; // 15-minute intervals
                 var openingTime = new TimeSpan(9, 0, 0); // 9:00 AM
                 var closingTime = new TimeSpan(18, 0, 0); // 6:00 PM
@@ -231,38 +236,6 @@ namespace KuaförRandevuSistemi.Controllers
                 return RedirectToAction("MyAppointments");
             }
         }
-
-
-        [HttpGet]
-        public IActionResult RebookAppointment(int appointmentId)
-        {
-            var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to manage your appointments.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            using (var db = new SalonDbContext())
-            {
-                var appointment = db.Appointments
-                    .Include(a => a.Service)
-                    .Include(a => a.Staff)
-                    .FirstOrDefault(a => a.Id == appointmentId && a.CustomerId == int.Parse(userId));
-
-                if (appointment == null)
-                {
-                    TempData["ErrorMessage"] = "Appointment not found.";
-                    return RedirectToAction("MyAppointments");
-                }
-
-                // Pass appointment data to the booking view
-                ViewBag.RebookServiceId = appointment.Service.Id;
-                ViewBag.RebookStaffId = appointment.Staff.Id;
-                return View("BookAppointment");
-            }
-        }
-
 
 
 
