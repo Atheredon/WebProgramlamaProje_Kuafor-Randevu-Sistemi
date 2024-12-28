@@ -1,48 +1,132 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿
+<h1>Randevu al</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
 }
 
-<h1>Book an Appointment</h1>
-
-<<form method="post" action="/Customer/BookAppointment">
+<form method="post" action="/Customer/BookAppointment">
     <div class="mb-3">
-        <label for="ServiceId" class="form-label">Service</label>
-        <select class="form-control" id="ServiceId" name="ServiceId" onchange="fetchAvailableSlots()" required>
-            <option value="">Select a Service</option>
+        <label for="ServiceId" class="form-label">Servis</label>
+        <select class="form-control" id="ServiceId" name="ServiceId" onchange="updateDetails()" required>
+            <option value="">Servis Seçin</option>
             @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
             {
-                <option value="@service.Id" data-duration="@service.Duration">@service.Name</option>
+                <option value="@service.Id" data-duration="@service.Duration" data-price="@service.Price">
+                    @service.Name (@service.Duration minutes) @service.Price ₺
+                </option>
             }
         </select>
     </div>
 
     <div class="mb-3">
-        <label for="StaffId" class="form-label">Staff</label>
+        <label for="StaffId" class="form-label">Çalışan</label>
         <select class="form-control" id="StaffId" name="StaffId" onchange="fetchAvailableSlots()" required>
-            <option value="">Select a Staff</option>
+            <option value="">Çalışan Seçin</option>
             @foreach (var staff in ViewBag.Staff as List<KuaförRandevuSistemi.Models.Staff>)
             {
-                <option value="@staff.Id">@staff.Name @staff.Surname</option>
+                @if(staff.Available)
+                {
+                    @if (staff.Specialty is not null)
+                    {
+                        <option value="@staff.Id">
+                            @staff.Name @staff.Surname (Specialty: @staff.Specialty.Name)
+                        </option>
+                    }else{
+                        <option value="@staff.Id">
+                            @staff.Name @staff.Surname
+                        </option>
+                    }
+                }
             }
         </select>
     </div>
 
     <div class="mb-3">
-        <label for="AppointmentDate" class="form-label">Date</label>
-        <input type="date" class="form-control" id="AppointmentDate" onchange="fetchAvailableSlots()" required />
+        <label for="AppointmentDate" class="form-label">Gün</label>
+        <input type="date" class="form-control" id="AppointmentDate" name="AppointmentDate" onchange="fetchAvailableSlots()" required />
+
     </div>
 
     <div class="mb-3">
-        <label for="TimeSlot" class="form-label">Available Time Slots</label>
-        <select class="form-control" id="TimeSlot" name="TimeSlot" required>
-            <option value="">Select a Time Slot</option>
+        <label for="TimeSlot" class="form-label">Musait saatler</label>
+        <select class="form-control" id="TimeSlot" name="TimeSlot" onchange="updateEndTime()" required>
+            <option value="">Zaman dilimi seçin</option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Book Appointment</button>
+    <!-- Appointment Details -->
+    <div class="mb-3">
+        <p id="Details" class="fw-bold">
+            Başlangıç: <span id="StartTime">N/A</span> |
+            Bitiş: <span id="EndTime">N/A</span> |
+            Süre: <span id="TotalTime">0</span> dakika | 
+            Ücret: <span id="TotalCost">0</span>₺
+        </p>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Randevu al</button>
 </form>
 
+
 <script>
+    document.getElementById("AppointmentDate").setAttribute("min", new Date().toISOString().split("T")[0]);
+
+    function updateDetails() {
+        // Get the selected service
+        const serviceDropdown = document.getElementById("ServiceId");
+        const selectedOption = serviceDropdown.options[serviceDropdown.selectedIndex];
+        const duration = parseInt(selectedOption.getAttribute("data-duration")) || 0;
+        const price = parseInt(selectedOption.getAttribute("data-price")) || 0;
+
+        // Update total time and total cost
+        document.getElementById("TotalTime").innerText = duration;
+        document.getElementById("TotalCost").innerText = price;
+
+        // Update the end time if a time slot is selected
+        updateEndTime();
+    }
+
+    function updateEndTime() {
+        // Get the selected time slot
+        const timeSlotDropdown = document.getElementById("TimeSlot");
+        const selectedSlot = timeSlotDropdown.value;
+
+        // Get the duration of the service
+        const serviceDropdown = document.getElementById("ServiceId");
+        const selectedService = serviceDropdown.options[serviceDropdown.selectedIndex];
+        const duration = parseInt(selectedService.getAttribute("data-duration")) || 0;
+
+        // If no time slot or duration is selected, reset the times
+        if (!selectedSlot || duration === 0) {
+            document.getElementById("StartTime").innerText = "N/A";
+            document.getElementById("EndTime").innerText = "N/A";
+            return;
+        }
+
+        // Calculate the start time
+        const [hours, minutes] = selectedSlot.split(":").map(Number);
+        const startTime = new Date();
+        startTime.setHours(hours, minutes, 0, 0);
+
+        // Display the start time
+        const startHours = String(startTime.getHours()).padStart(2, "0");
+        const startMinutes = String(startTime.getMinutes()).padStart(2, "0");
+        document.getElementById("StartTime").innerText = `${startHours}:${startMinutes}`;
+
+        // Calculate the end time
+        const endTime = new Date(startTime.getTime() + duration * 60000); // Add duration in milliseconds
+        const endHours = String(endTime.getHours()).padStart(2, "0");
+        const endMinutes = String(endTime.getMinutes()).padStart(2, "0");
+
+        // Display the end time
+        document.getElementById("EndTime").innerText = `${endHours}:${endMinutes}`;
+    }
+
+
     function fetchAvailableSlots() {
         const staffId = document.getElementById("StaffId").value;
         const date = document.getElementById("AppointmentDate").value;
@@ -62,6 +146,14 @@
                 const timeSlotDropdown = document.getElementById("TimeSlot");
                 timeSlotDropdown.innerHTML = '<option value="">Select a Time Slot</option>'; // Clear previous slots
 
+                if (data.length === 0) {
+                    const noSlotOption = document.createElement("option");
+                    noSlotOption.value = "";
+                    noSlotOption.textContent = "No available slots";
+                    timeSlotDropdown.appendChild(noSlotOption);
+                    return;
+                }
+
                 data.forEach(slot => {
                     const option = document.createElement("option");
                     option.value = slot;
@@ -73,4 +165,5 @@
                 console.error("Error fetching time slots:", error);
             });
     }
+
 </script>

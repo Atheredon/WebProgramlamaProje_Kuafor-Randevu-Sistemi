@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Resminizi Yükleyin</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data" action="/AI/GenerateHairstyles">
+    <div class="mb-3">
+        <label for="image" class="form-label">Resminizi yükleyin</label>
+        <input type="file" class="form-control" id="image" name="image" required />
+        <small class="text-muted">Kabul edilen formatlar: JPG, PNG. Max boyut: 5MB.</small>
+    </div>
+
+    <div class="mb-3">
+        <label for="prompt" class="form-label">Prompt girin</label>
+        <textarea class="form-control" id="prompt" name="prompt" rows="3" required></textarea>
+        <small class="text-muted">İstediğiniz saç stillini ingilizce tarif edin (örn., "a photo of a face with long hair").</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Saç stilli oluştur</button>
+</form>

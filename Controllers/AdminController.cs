@@ -1,18 +1,13 @@
-﻿using KuaförRandevuSistemi.Models;
+﻿using KuaförRandevuSistemi.Filters;
+using KuaförRandevuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KuaförRandevuSistemi.Controllers
 {
-    public class AdminController : BaseAdminController
+    [RoleAuthorize("Admin")]
+    public class AdminController : BaseController
     {
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-
         public IActionResult Services()
         {
             using (var db = new SalonDbContext())
@@ -38,7 +33,7 @@ namespace KuaförRandevuSistemi.Controllers
                     db.SaveChanges();
                 }
 
-                TempData["SuccessMessage"] = service.Name + " Service added successfully!";
+                TempData["SuccessMessage"] = service.Name + " servisi başarıyla eklendi!";
                 return RedirectToAction("Services");
             }
 
@@ -48,49 +43,44 @@ namespace KuaförRandevuSistemi.Controllers
         [HttpGet]
         public IActionResult DeleteService(int id)
         {
-            // Example validation for later
-            //var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
-            //if (hasAppointments)
-            //{
-            //    TempData["ErrorMessage"] = "This service cannot be deleted because it is associated with one or more appointments.";
-            //    return RedirectToAction("Services");
-            //}
             using (var db = new SalonDbContext())
             {
+                // Fetch the service
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
                 if (service == null)
                 {
-                    TempData["ErrorMessage"] = "Service not found.";
+                    TempData["ErrorMessage"] = "Servis bulunamadı.";
                     return RedirectToAction("Services");
                 }
 
-                // TODO: Add logic to check if the service is linked to appointments.
+                // Check if the service is associated with any appointments
+                var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
+                if (hasAppointments)
+                {
+                    TempData["ErrorMessage"] = $"Servis '{service.Name}' silinemez çünkü başka bir randevuyla bağlantılı.";
+                    return RedirectToAction("Services");
+                }
 
+                // Remove the service
                 db.Services.Remove(service);
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = $"Service '{service.Name}' deleted successfully!";
+                TempData["SuccessMessage"] = $"Servis '{service.Name}' başarıyla silindi!";
             }
 
             return RedirectToAction("Services");
         }
 
+
         [HttpGet]
         public IActionResult EditService(int id)
         {
-            // Example validation for later
-            //var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
-            //if (hasAppointments)
-            //{
-            //    TempData["ErrorMessage"] = "This service cannot be deleted because it is associated with one or more appointments.";
-            //    return RedirectToAction("Services");
-            //}
             using (var db = new SalonDbContext())
             {
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
                 if (service == null)
                 {
-                    TempData["ErrorMessage"] = "Service not found.";
+                    TempData["ErrorMessage"] = "Servis bulunamadı.";
                     return RedirectToAction("Services");
                 }
 
@@ -113,11 +103,11 @@ namespace KuaförRandevuSistemi.Controllers
                         existingService.Price = service.Price;
 
                         db.SaveChanges();
-                        TempData["SuccessMessage"] = service.Name + " Service updated successfully!";
+                        TempData["SuccessMessage"] = service.Name + " Servisi başarıyla değiştirildi!";
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Service not found.";
+                        TempData["ErrorMessage"] = "Servis bulunamadı.";
                     }
                 }
 
@@ -156,7 +146,7 @@ namespace KuaförRandevuSistemi.Controllers
                 {
                     if (db.Users.Any(u => u.Email == staff.Email))
                     {
-                        TempData["ErrorMessage"] = "This email is already registered.";
+                        TempData["ErrorMessage"] = "Bu Email çoktan kayıtlı.";
                         return View(staff);
                     }
 
@@ -173,11 +163,9 @@ namespace KuaförRandevuSistemi.Controllers
                     db.SaveChanges();
                 }
 
-                TempData["SuccessMessage"] = "Staff member added successfully!";
+                TempData["SuccessMessage"] = "Çalışan " +staff.Name + " " +staff.Surname + " başarıyla eklendi!";
                 return RedirectToAction("Staff");
             }
-            Console.WriteLine("Model state is invalid.");
-            Console.WriteLine(staff.Id + " " + staff.Name + " " + staff.Surname + " " + staff.Email + " " + staff.Role + " ");
             using (var db = new SalonDbContext())
             {
                 ViewBag.Services = db.Services.ToList();
@@ -199,7 +187,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                 if (staff == null)
                 {
-                    TempData["ErrorMessage"] = "Staff member not found.";
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                     return RedirectToAction("Staff");
                 }
 
@@ -207,7 +195,7 @@ namespace KuaförRandevuSistemi.Controllers
                 db.Set<Staff>().Remove(staff);
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Staff member deleted successfully!";
+                TempData["SuccessMessage"] = "Çalışan başarıyla silindi!";
                 return RedirectToAction("Staff");
             }
         }
@@ -216,11 +204,6 @@ namespace KuaförRandevuSistemi.Controllers
         [HttpGet]
         public IActionResult EditStaff(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             using (var db = new SalonDbContext())
             {
                 var staff = db.Set<Staff>()
@@ -230,7 +213,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                 if (staff == null)
                 {
-                    TempData["ErrorMessage"] = "Staff member not found.";
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                     return RedirectToAction("Staff");
                 }
 
@@ -251,7 +234,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                     if (existingStaff == null)
                     {
-                        TempData["ErrorMessage"] = "Staff member not found.";
+                        TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                         return RedirectToAction("Staff");
                     }
 
@@ -272,7 +255,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                     db.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Staff member updated successfully!";
+                    TempData["SuccessMessage"] = "Çalışan bilgileri başarıyla güncellendi!";
                     return RedirectToAction("Staff");
                 }
             }
@@ -281,6 +264,206 @@ namespace KuaförRandevuSistemi.Controllers
                 ViewBag.Services = db.Services.ToList();
             }
             return View(staff);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleAvailability(int staffId)
+        {
+            using (var db = new SalonDbContext())
+            {
+                var staff = db.Staffs.FirstOrDefault(s => s.Id == staffId);
+                if (staff == null)
+                {
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
+                    return RedirectToAction("Staff");
+                }
+
+                // Toggle availability
+                staff.Available = !staff.Available;
+                db.SaveChanges();
+
+                return RedirectToAction("Staff");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Analytics()
+        {
+            using (var db = new SalonDbContext())
+            {
+                var now = DateTime.UtcNow; // Use UTC explicitly
+
+                //Appointments by time
+                var appointmentsAllTimes = (from app in db.Appointments where (app.AppointmentDate <= now) select app).ToList();
+                var appointmentsThisWeek = (from app in appointmentsAllTimes
+                                            where (app.AppointmentDate.Year == now.Year && app.AppointmentDate.Month == now.Month && 
+                                             now.Date - app.AppointmentDate.Date <= new TimeSpan(7,0,0,0)) 
+                                            select app).ToList();
+                var appointmentsThisMonth = (from app in appointmentsAllTimes where (app.AppointmentDate.Year == now.Year && app.AppointmentDate.Month == now.Month) select app).ToList();
+
+                // Total appointments
+                var totalAppointments = appointmentsAllTimes.Count();
+                var weeklyAppointments = appointmentsThisWeek.Count();
+                var monthlyAppointments = appointmentsThisMonth.Count();
+
+                // Total revenue
+                var totalRevenue = 0;
+                foreach( var appointment in (from app in appointmentsAllTimes join srvs in db.Services on app.ServiceId equals srvs.Id where (app.Status == "Confirmed") select app).ToList())
+                {
+                    totalRevenue += appointment.Service.Price;
+                }
+
+                var weeklyRevenue = 0;
+                foreach (var appointment in (from app in appointmentsThisWeek join srvs in db.Services on app.ServiceId equals srvs.Id where (app.Status == "Confirmed") select app).ToList())
+                {
+                    weeklyRevenue += appointment.Service.Price;
+                }
+
+                var monthlyRevenue = 0;
+                foreach (var appointment in (from app in appointmentsThisMonth join srvs in db.Services on app.ServiceId equals srvs.Id where(app.Status == "Confirmed") select app).ToList())
+                {
+                    monthlyRevenue += appointment.Service.Price;
+                }
+
+                // Popular services
+                var popularServices = (from app in appointmentsAllTimes
+                                       join service in db.Services on app.ServiceId equals service.Id
+                                       group service by service.Name into serviceGroup
+                                       orderby serviceGroup.Count() descending
+                                       select new
+                                       {
+                                           ServiceName = serviceGroup.Key,
+                                           Bookings = serviceGroup.Count()
+                                       })
+                                       .Take(5)
+                                       .ToList();
+
+                var weeklyPopularServices = (from app in appointmentsThisWeek
+                                             join service in db.Services on app.ServiceId equals service.Id
+                                             group service by service.Name into serviceGroup
+                                             orderby serviceGroup.Count() descending
+                                             select new
+                                             {
+                                                 ServiceName = serviceGroup.Key,
+                                                 Bookings = serviceGroup.Count()
+                                             })
+                                             .Take(5)
+                                             .ToList();
+
+                var monthlyPopularServices = (from app in appointmentsThisMonth
+                                              join service in db.Services on app.ServiceId equals service.Id
+                                              group service by service.Name into serviceGroup
+                                              orderby serviceGroup.Count() descending
+                                              select new
+                                              {
+                                                  ServiceName = serviceGroup.Key,
+                                                  Bookings = serviceGroup.Count()
+                                              })
+                                              .Take(5)
+                                              .ToList();
+
+
+                // Staff performance
+                var staffPerformance = (from app in appointmentsAllTimes
+                                        join staff in db.Staffs on app.StaffId equals staff.Id
+                                        where app.Status == "Confirmed"
+                                        group staff by new { staff.Name, staff.Surname } into staffGroup
+                                        orderby staffGroup.Count() descending
+                                        select new
+                                        {
+                                            StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                            Appointments = staffGroup.Count()
+                                        })
+                                        .ToList();
+
+                var weeklyStaffPerformance = (from app in appointmentsThisWeek
+                                              join staff in db.Staffs on app.StaffId equals staff.Id
+                                              where app.Status == "Confirmed"
+                                              group staff by new { staff.Name, staff.Surname } into staffGroup
+                                              orderby staffGroup.Count() descending
+                                              select new
+                                              {
+                                                  StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                                  Appointments = staffGroup.Count()
+                                              })
+                                              .ToList();
+
+                var monthlyStaffPerformance = (from app in appointmentsThisMonth
+                                               join staff in db.Staffs on app.StaffId equals staff.Id
+                                               where app.Status == "Confirmed"
+                                               group staff by new { staff.Name, staff.Surname } into staffGroup
+                                               orderby staffGroup.Count() descending
+                                               select new
+                                               {
+                                                   StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                                   Appointments = staffGroup.Count()
+                                               })
+                                               .ToList();
+
+
+                // Pass data to the view
+                ViewBag.TotalAppointments = totalAppointments;
+                ViewBag.WeeklyAppointments = weeklyAppointments;
+                ViewBag.MonthlyAppointments = monthlyAppointments;
+
+                ViewBag.TotalRevenue = totalRevenue;
+                ViewBag.WeeklyRevenue = weeklyRevenue;
+                ViewBag.MonthlyRevenue = monthlyRevenue;
+
+                ViewBag.PopularServices = popularServices;
+                ViewBag.WeeklyPopularServices = weeklyPopularServices;
+                ViewBag.MonthlyPopularServices = monthlyPopularServices;
+
+                ViewBag.StaffPerformance = staffPerformance;
+                ViewBag.WeeklyStaffPerformance = weeklyStaffPerformance;
+                ViewBag.MonthlyStaffPerformance = monthlyStaffPerformance;
+
+                return View();
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult Customers()
+        {
+            using (var db = new SalonDbContext())
+            {
+                var customers = db.Users
+                    .Where(u => u.Role == "Customer")
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Name,
+                        c.Surname,
+                        c.Email
+                    })
+                    .ToList();
+
+                return View(customers);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CustomerDetails(int customerId)
+        {
+            using (var db = new SalonDbContext())
+            {
+                var customer = db.Users.FirstOrDefault(u => u.Id == customerId && u.Role == "Customer");
+                if (customer == null)
+                {
+                    TempData["ErrorMessage"] = "Müşteri bulunamadı.";
+                    return RedirectToAction("Customers");
+                }
+
+                var appointments = db.Appointments
+                    .Where(a => a.CustomerId == customerId)
+                    .Include(a => a.Service)
+                    .Include(a => a.Staff)
+                    .ToList();
+
+                ViewBag.Customer = customer;
+                return View(appointments);
+            }
         }
 
 

@@ -1,0 +1,42 @@
+﻿
+<h1>Your Generated Hairstyles</h1>
+
+<div class="row">
+    <!-- Uploaded Image -->
+    <div class="col-md-6">
+        <h3>Yüklenen Resim</h3>
+        <div class="card">
+            <img src="@ViewBag.UploadedImageUrl" alt="Uploaded Image" class="card-img-top img-thumbnail" />
+            <div class="card-body text-center">
+                <a href="@ViewBag.UploadedImageUrl" target="_blank" class="btn btn-secondary">Orjinali İndir</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generated Images -->
+    <div class="col-md-6">
+        <h3>Oluşturulan saç stilleri</h3>
+        <div class="row">
+            @if (ViewBag.OutputUrls != null && ((List<string>)ViewBag.OutputUrls).Count > 0)
+            {
+                @foreach (var url in ViewBag.OutputUrls)
+                {
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <img src="@url" alt="Generated Image" class="card-img-top img-thumbnail" />
+                            <div class="card-body text-center">
+                                <a href="@url" target="_blank" class="btn btn-secondary">İndir</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <p>Çıkış üretilemedi. Lütfen tekrar deneyin.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -3,7 +3,7 @@
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container mt-5">
-    <h1 class="mb-4">Staff Members</h1>
+    <h1 class="mb-4">Çalışanlar</h1>
 
     <!-- Success or Error Message -->
     @if (TempData["SuccessMessage"] != null)
@@ -22,17 +22,18 @@
 
     <!-- Add New Staff Button -->
     <div class="d-flex justify-content-end mb-3">
-        <a class="btn btn-primary" href="/Admin/AddStaff">Add New Staff</a>
+        <a class="btn btn-primary" href="/Admin/AddStaff">Yeni Çalışan Ekle</a>
     </div>
 
     <!-- Staff Table -->
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>İsim</th>
                 <th>Email</th>
-                <th>Specialty</th>
-                <th>Actions</th>
+                <th>Uzmanlık</th>
+                <th>Müsaitlik</th>
+                <th>Aksiyonlar</th>
             </tr>
         </thead>
         <tbody>
@@ -49,12 +50,37 @@
                     {
                         <td>@staff.Specialty.Name</td>
                     }
+                    @if(staff.Available)
+                    {
+                        <td>Musait</td>
+                    }
+                    else
+                    {
+                        <td>Müsait değil</td>
+                    }
                     <td>
                         <!-- Edit Button -->
                         <a class="btn btn-warning btn-sm me-2" href="/Admin/EditStaff/@staff.Id">Edit</a>
 
                         <!-- Remove Button -->
                         <button class="btn btn-danger btn-sm" onclick="confirmDelete(@staff.Id, '@staff.Name @staff.Surname')">Delete</button>
+
+                        <!-- Availablety Button -->
+                        @if (staff.Available)
+                        {
+                            <form method="post" action="/Admin/ToggleAvailability" class="d-inline">
+                                <input type="hidden" name="staffId" value="@staff.Id" />
+                                <button type="submit" class="btn btn-warning btn-sm">İzinli</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Admin/ToggleAvailability" class="d-inline">
+                                <input type="hidden" name="staffId" value="@staff.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Geri Döndü</button>
+                            </form>
+                        }
+
                     </td>
                 </tr>
             }

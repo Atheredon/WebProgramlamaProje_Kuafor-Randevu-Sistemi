@@ -1,21 +1,21 @@
 ﻿@model KuaförRandevuSistemi.Models.Staff
 
 <div class="container mt-5">
-    <h1 class="mb-4">Edit Staff Member</h1>
+    <h1 class="mb-4">Çalışanı düzenle</h1>
 
     <form method="post" action="/Admin/EditStaff">
         <input type="hidden" name="Id" value="@Model.Id" />
 
         <!-- Name -->
         <div class="mb-3">
-            <label for="Name" class="form-label">First Name</label>
+            <label for="Name" class="form-label">İsim</label>
             <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required maxlength="50" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <!-- Surname -->
         <div class="mb-3">
-            <label for="Surname" class="form-label">Last Name</label>
+            <label for="Surname" class="form-label">Soyisim</label>
             <input type="text" class="form-control" id="Surname" name="Surname" value="@Model.Surname" required maxlength="25" />
             <span asp-validation-for="Surname" class="text-danger"></span>
         </div>
@@ -29,20 +29,20 @@
 
         <!-- Password -->
         <div class="mb-3">
-            <label for="Password" class="form-label">Password</label>
+            <label for="Password" class="form-label">Şifre</label>
             <input type="password" class="form-control" id="Password" name="Password" value="@Model.Password" required minlength="6" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label for="ConfirmPassword" class="form-label">ConfirmPassword</label>
+            <label for="ConfirmPassword" class="form-label">Şifre Tekrar</label>
             <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" value="@Model.ConfirmPassword" required minlength="6" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
         <!-- Specialty -->
         <div class="mb-3">
-            <label for="Specialty" class="form-label">Specialty</label>
+            <label for="Specialty" class="form-label">Uzmanlık</label>
             <select class="form-control" id="Specialty" name="SpecialtyId">
                 <option value="">None</option>
                 @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
@@ -54,7 +54,7 @@
 
         <!-- Assignable Services -->
         <div class="mb-3">
-            <label for="Services" class="form-label">Services Staff Can Perform</label>
+            <label for="Services" class="form-label">Yapılabilen servisler</label>
             <select class="form-control" id="Services" name="ServiceIds" multiple>
                 @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
                 {
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a href="/Admin/Staff" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a href="/Admin/Staff" class="btn btn-secondary">İptal</a>
     </form>
 </div>
