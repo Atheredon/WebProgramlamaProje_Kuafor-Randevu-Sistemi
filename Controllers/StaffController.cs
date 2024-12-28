@@ -12,11 +12,6 @@ namespace KuaförRandevuSistemi.Controllers
         public IActionResult ManageMyAppointments()
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to view your appointments.";
-                return RedirectToAction("Login", "Account");
-            }
 
             using (var db = new SalonDbContext())
             {
@@ -37,24 +32,19 @@ namespace KuaförRandevuSistemi.Controllers
         public IActionResult CancelAppointment(int appointmentId)
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to manage appointments.";
-                return RedirectToAction("Login", "Account");
-            }
 
             using (var db = new SalonDbContext())
             {
                 var appointment = db.Appointments.FirstOrDefault(a => a.Id == appointmentId && a.StaffId == int.Parse(userId));
                 if (appointment == null)
                 {
-                    TempData["ErrorMessage"] = "Appointment not found or you are not authorized to cancel it.";
+                    TempData["ErrorMessage"] = "Randevu bulunamadı ya da iptal etme yetkiniz yok.";
                     return RedirectToAction("ManageMyAppointments");
                 }
 
                 if (appointment.AppointmentDate <= DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "You cannot cancel past or ongoing appointments.";
+                    TempData["ErrorMessage"] = "Geçmiş veya devam eden randevuları iptal edemezsiniz.";
                     return RedirectToAction("ManageMyAppointments");
                 }
 
@@ -62,7 +52,7 @@ namespace KuaförRandevuSistemi.Controllers
                 appointment.Status = "Cancelled";
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Appointment canceled successfully.";
+                TempData["SuccessMessage"] = "Randevu başarıyla iptal edildi.";
                 return RedirectToAction("ManageMyAppointments");
             }
         }
@@ -71,24 +61,19 @@ namespace KuaförRandevuSistemi.Controllers
         public IActionResult ConfirmAppointment(int appointmentId)
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to manage appointments.";
-                return RedirectToAction("Login", "Account");
-            }
 
             using (var db = new SalonDbContext())
             {
                 var appointment = db.Appointments.FirstOrDefault(a => a.Id == appointmentId && a.StaffId == int.Parse(userId));
                 if (appointment == null)
                 {
-                    TempData["ErrorMessage"] = "Appointment not found or you are not authorized to confirm it.";
+                    TempData["ErrorMessage"] = "Randevu bulunamadı ya da iptal etme yetkiniz yok.";
                     return RedirectToAction("ManageMyAppointments");
                 }
 
                 if (appointment.AppointmentDate <= DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "You cannot confirm past or ongoing appointments.";
+                    TempData["ErrorMessage"] = "Geçmiş veya devam eden randevuları kabul edemezsiniz.";
                     return RedirectToAction("ManageMyAppointments");
                 }
 
@@ -96,7 +81,7 @@ namespace KuaförRandevuSistemi.Controllers
                 appointment.Status = "Confirmed";
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Appointment confirmed successfully.";
+                TempData["SuccessMessage"] = "Randevu başarıyla onaylandı.";
                 return RedirectToAction("ManageMyAppointments");
             }
         }

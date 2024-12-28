@@ -1,6 +1,6 @@
 ﻿@model List<KuaförRandevuSistemi.Models.Appointment>
 
-<h1>My Appointments</h1>
+<h1>Randevular</h1>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -19,11 +19,11 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Date & Time</th>
-            <th>Customer</th>
-            <th>Service</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Tarih & Saat</th>
+            <th>Müşteri</th>
+            <th>Servis</th>
+            <th>Durum</th>
+            <th>Aksiyonlar</th>
         </tr>
     </thead>
     <tbody>
@@ -39,11 +39,11 @@
                     {
                         <form method="post" action="/Staff/ConfirmAppointment" class="d-inline">
                             <input type="hidden" name="appointmentId" value="@appointment.Id" />
-                            <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                            <button type="submit" class="btn btn-success btn-sm">Onayla</button>
                         </form>
                         <form method="post" action="/Staff/CancelAppointment" class="d-inline" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
                             <input type="hidden" name="appointmentId" value="@appointment.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">İptal et</button>
                         </form>
                     }
                 </td>

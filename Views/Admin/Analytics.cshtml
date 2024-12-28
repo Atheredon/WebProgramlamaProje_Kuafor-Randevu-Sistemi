@@ -1,11 +1,11 @@
-﻿<h1>Analytics Dashboard</h1>
+﻿<h1>Analytics</h1>
 
 <!-- Total Appointments and Revenue -->
-<div class="row">
+<div class="row mt-5">
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Total Appointments</h5>
+                <h5 class="card-title">Toplam Randevu Sayısı</h5>
                 <p class="card-text">@ViewBag.TotalAppointments</p>
             </div>
         </div>
@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Appointments This Week</h5>
+                <h5 class="card-title">Bu Haftaki Randevu Sayısı</h5>
                 <p class="card-text">@ViewBag.WeeklyAppointments</p>
             </div>
         </div>
@@ -21,7 +21,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Appointments This Month</h5>
+                <h5 class="card-title">Bu Ayki Randevu Sayısı</h5>
                 <p class="card-text">@ViewBag.MonthlyAppointments</p>
             </div>
         </div>
@@ -32,7 +32,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Total Revenue</h5>
+                <h5 class="card-title">Toplam Hasılat</h5>
                 <p class="card-text">@ViewBag.TotalRevenue ₺</p>
             </div>
         </div>
@@ -40,7 +40,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Revenue This Week</h5>
+                <h5 class="card-title">Bu Haftaki Toplam Hasılat</h5>
                 <p class="card-text">@ViewBag.WeeklyRevenue ₺</p>
             </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Revenue This Month</h5>
+                <h5 class="card-title">Bu Ayki Toplam Hasılat</h5>
                 <p class="card-text">@ViewBag.MonthlyRevenue ₺</p>
             </div>
         </div>
@@ -56,15 +56,15 @@
 </div>
 
 <!-- Popular Services -->
-<h2>Popular Services</h2>
-<h3>Total</h3>
+<h2 class="mt-5">Populer Servisler</h2>
+<h3 class="mt-5">Toplam</h3>
 @if (ViewBag.popularServices != null && ((IEnumerable<dynamic>)ViewBag.popularServices).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Service</th>
-                <th>Bookings</th>
+                <th>Servis</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>
@@ -84,14 +84,14 @@ else
 }
 
 
-<h3>This Week</h3>
+<h3 class="mt-5">Bu Hafta</h3>
 @if (ViewBag.WeeklyPopularServices != null && ((IEnumerable<dynamic>)ViewBag.WeeklyPopularServices).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Service</th>
-                <th>Bookings</th>
+                <th>Servis</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>
@@ -110,14 +110,14 @@ else
     <p>No data available for popular services this week.</p>
 }
 
-<h3>This Month</h3>
+<h3 class="mt-5">Bu Ay</h3>
 @if (ViewBag.MonthlyPopularServices != null && ((IEnumerable<dynamic>)ViewBag.MonthlyPopularServices).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Service</th>
-                <th>Bookings</th>
+                <th>Servis</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>
@@ -137,16 +137,16 @@ else
 }
 
 <!-- Staff Performance -->
-<h2>Staff Performance</h2>
+<h2>Çalışan Performansı</h2>
 
-<h3>Total</h3>
+<h3 class="mt-5">Toplam</h3>
 @if (ViewBag.staffPerformance != null && ((IEnumerable<dynamic>)ViewBag.staffPerformance).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Staff</th>
-                <th>Appointments</th>
+                <th>Çalışan</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>
@@ -165,14 +165,14 @@ else
     <p>No data available for staff performance this week.</p>
 }
 
-<h3>This Week</h3>
+<h3 class="mt-5">Bu Hafta</h3>
 @if (ViewBag.WeeklyStaffPerformance != null && ((IEnumerable<dynamic>)ViewBag.WeeklyStaffPerformance).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Staff</th>
-                <th>Appointments</th>
+                <th>Çalışan</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>
@@ -191,14 +191,14 @@ else
     <p>No data available for staff performance this week.</p>
 }
 
-<h3>This Month</h3>
+<h3 class="mt-5">Bu Ay</h3>
 @if (ViewBag.MonthlyStaffPerformance != null && ((IEnumerable<dynamic>)ViewBag.MonthlyStaffPerformance).Any())
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th>Staff</th>
-                <th>Appointments</th>
+                <th>Çalışan</th>
+                <th>Rezervasyon Sayısı</th>
             </tr>
         </thead>
         <tbody>

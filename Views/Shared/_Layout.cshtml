@@ -1,5 +1,6 @@
 ﻿
 <!DOCTYPE html>
+
 <html lang="en" data-bs-theme="auto">
 <head>
     <meta charset="utf-8">
@@ -9,10 +10,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark py-1">
             <div class="container-fluid">
                 <!-- Home Link -->
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">Salon Kuaför</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -21,36 +22,35 @@
                     <!-- Left-aligned links -->
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="/Home/Services">Services</a>
+                            <a class="nav-link" href="/Home/Services">Servislerimiz</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/AI/UploadImage">Try it first with AI</a>
+                            <a class="nav-link" href="/AI/UploadImage">AI ile Kendinizde Görün</a>
                         </li>
                         @if (ViewData["UserRole"]?.ToString() == "Customer")
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Customer/BookAppointment">Make Appointment</a>
+                                <a class="nav-link" href="/Customer/BookAppointment">Randevu Al</a>
                             </li>
                         }
                         @if (ViewData["UserRole"]?.ToString() == "Admin")
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Admin/Services">Manage Services</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Admin/Staff">Manage Staffs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Admin/Customers">Customers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Admin/Analytics">Analytics</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle btn" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin Paneli
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/Admin/Services">Hizmetler</a></li>
+                                    <li><a class="dropdown-item" href="/Admin/Staff">Çalışanlar</a></li>
+                                    <li><a class="dropdown-item" href="/Admin/Customers">Müşteriler</a></li>
+                                    <li><a class="dropdown-item" href="/Admin/Analytics">Analytics</a></li>
+                                </ul>
                             </li>
                         }
                         @if (ViewData["UserRole"]?.ToString() == "Staff")
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Staff/ManageMyAppointments">Manage Appointments</a>
+                                <a class="nav-link" href="/Staff/ManageMyAppointments">Randevularımı işlet</a>
                             </li>
                         }
                     </ul>
@@ -60,24 +60,24 @@
                         @if (ViewData["UserId"] != null)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle btn btn-secondary text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle btn btn-primary text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @ViewData["UserName"]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/Account/ViewDetails">View Account Details</a></li>
-                                    <li><a class="dropdown-item" href="/Customer/MyAppointments">My Appointments</a></li>
+                                    <li><a class="dropdown-item" href="/Account/ViewDetails">Hesap Detayları</a></li>
+                                    <li><a class="dropdown-item" href="/Customer/MyAppointments">Randevularım</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="/Account/Logout">Logout</a></li>
+                                    <li><a class="dropdown-item text-danger" href="/Account/Logout">Çıkış Yap</a></li>
                                 </ul>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white me-2" href="/Account/Login">Login</a>
+                                <a class="nav-link btn btn-primary text-white me-2" href="/Account/Login">Giriş Yap</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link btn btn-secondary text-white" href="/Account/SignUp">Sign Up</a>
+                                <a class="nav-link btn btn-primary text-white me-2" href="/Account/SignUp">Kaydol</a>
                             </li>
                         }
                     </ul>
@@ -86,6 +86,8 @@
         </nav>
     </header>
 
+    <div style="height: 3rem;"></div>
+
     <!-- Main content -->
     <main class="container mt-5">
         @RenderBody()
@@ -93,7 +95,7 @@
 
     <!-- Footer -->
     <footer class="container text-center mt-5">
-        <p>&copy; 2024 Hair Salon. All Rights Reserved.</p>
+        <p>Salon Kuaför</p>
     </footer>
     <script src="/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -4,7 +4,7 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -25,4 +25,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-

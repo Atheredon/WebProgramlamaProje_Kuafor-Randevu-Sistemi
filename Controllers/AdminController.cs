@@ -33,7 +33,7 @@ namespace KuaförRandevuSistemi.Controllers
                     db.SaveChanges();
                 }
 
-                TempData["SuccessMessage"] = service.Name + " Service added successfully!";
+                TempData["SuccessMessage"] = service.Name + " servisi başarıyla eklendi!";
                 return RedirectToAction("Services");
             }
 
@@ -49,7 +49,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
                 if (service == null)
                 {
-                    TempData["ErrorMessage"] = "Service not found.";
+                    TempData["ErrorMessage"] = "Servis bulunamadı.";
                     return RedirectToAction("Services");
                 }
 
@@ -57,7 +57,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
                 if (hasAppointments)
                 {
-                    TempData["ErrorMessage"] = $"Service '{service.Name}' cannot be deleted because it is associated with one or more appointments.";
+                    TempData["ErrorMessage"] = $"Servis '{service.Name}' silinemez çünkü başka bir randevuyla bağlantılı.";
                     return RedirectToAction("Services");
                 }
 
@@ -65,7 +65,7 @@ namespace KuaförRandevuSistemi.Controllers
                 db.Services.Remove(service);
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = $"Service '{service.Name}' deleted successfully!";
+                TempData["SuccessMessage"] = $"Servis '{service.Name}' başarıyla silindi!";
             }
 
             return RedirectToAction("Services");
@@ -80,7 +80,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
                 if (service == null)
                 {
-                    TempData["ErrorMessage"] = "Service not found.";
+                    TempData["ErrorMessage"] = "Servis bulunamadı.";
                     return RedirectToAction("Services");
                 }
 
@@ -103,11 +103,11 @@ namespace KuaförRandevuSistemi.Controllers
                         existingService.Price = service.Price;
 
                         db.SaveChanges();
-                        TempData["SuccessMessage"] = service.Name + " Service updated successfully!";
+                        TempData["SuccessMessage"] = service.Name + " Servisi başarıyla değiştirildi!";
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Service not found.";
+                        TempData["ErrorMessage"] = "Servis bulunamadı.";
                     }
                 }
 
@@ -146,7 +146,7 @@ namespace KuaförRandevuSistemi.Controllers
                 {
                     if (db.Users.Any(u => u.Email == staff.Email))
                     {
-                        TempData["ErrorMessage"] = "This email is already registered.";
+                        TempData["ErrorMessage"] = "Bu Email çoktan kayıtlı.";
                         return View(staff);
                     }
 
@@ -163,7 +163,7 @@ namespace KuaförRandevuSistemi.Controllers
                     db.SaveChanges();
                 }
 
-                TempData["SuccessMessage"] = "Staff member added successfully!";
+                TempData["SuccessMessage"] = "Çalışan " +staff.Name + " " +staff.Surname + " başarıyla eklendi!";
                 return RedirectToAction("Staff");
             }
             using (var db = new SalonDbContext())
@@ -187,7 +187,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                 if (staff == null)
                 {
-                    TempData["ErrorMessage"] = "Staff member not found.";
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                     return RedirectToAction("Staff");
                 }
 
@@ -195,7 +195,7 @@ namespace KuaförRandevuSistemi.Controllers
                 db.Set<Staff>().Remove(staff);
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Staff member deleted successfully!";
+                TempData["SuccessMessage"] = "Çalışan başarıyla silindi!";
                 return RedirectToAction("Staff");
             }
         }
@@ -213,7 +213,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                 if (staff == null)
                 {
-                    TempData["ErrorMessage"] = "Staff member not found.";
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                     return RedirectToAction("Staff");
                 }
 
@@ -234,7 +234,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                     if (existingStaff == null)
                     {
-                        TempData["ErrorMessage"] = "Staff member not found.";
+                        TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                         return RedirectToAction("Staff");
                     }
 
@@ -255,7 +255,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                     db.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Staff member updated successfully!";
+                    TempData["SuccessMessage"] = "Çalışan bilgileri başarıyla güncellendi!";
                     return RedirectToAction("Staff");
                 }
             }
@@ -274,7 +274,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var staff = db.Staffs.FirstOrDefault(s => s.Id == staffId);
                 if (staff == null)
                 {
-                    TempData["ErrorMessage"] = "Staff not found.";
+                    TempData["ErrorMessage"] = "Çalışan bulunamadı.";
                     return RedirectToAction("Staff");
                 }
 
@@ -282,7 +282,6 @@ namespace KuaförRandevuSistemi.Controllers
                 staff.Available = !staff.Available;
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = $"Staff availability updated successfully. {(staff.Available ? "Available" : "Unavailable")}";
                 return RedirectToAction("Staff");
             }
         }
@@ -452,7 +451,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var customer = db.Users.FirstOrDefault(u => u.Id == customerId && u.Role == "Customer");
                 if (customer == null)
                 {
-                    TempData["ErrorMessage"] = "Customer not found.";
+                    TempData["ErrorMessage"] = "Müşteri bulunamadı.";
                     return RedirectToAction("Customers");
                 }
 

@@ -24,16 +24,11 @@ namespace KuaförRandevuSistemi.Controllers
             try
             {
                 var userId = HttpContext.Session.GetString("UserId");
-                if (string.IsNullOrEmpty(userId))
-                {
-                    TempData["ErrorMessage"] = "Please log in to book an appointment.";
-                    return RedirectToAction("Login", "Account");
-                }
 
                 // Ensure valid date and time slot
                 if (AppointmentDate == default(DateTime) || string.IsNullOrEmpty(TimeSlot))
                 {
-                    TempData["ErrorMessage"] = "Please select a valid date and time slot.";
+                    TempData["ErrorMessage"] = "Lütfen geçerli bir tarih ve zaman seçin.";
                     return RedirectToAction("BookAppointment");
                 }
 
@@ -44,7 +39,7 @@ namespace KuaförRandevuSistemi.Controllers
                     var service = db.Services.FirstOrDefault(s => s.Id == ServiceId);
                     if (service == null)
                     {
-                        TempData["ErrorMessage"] = "Service not found.";
+                        TempData["ErrorMessage"] = "Servis Bulunamadı.";
                         return RedirectToAction("BookAppointment");
                     }
 
@@ -61,14 +56,14 @@ namespace KuaförRandevuSistemi.Controllers
                     db.Appointments.Add(appointment);
                     db.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Appointment booked successfully!";
+                    TempData["SuccessMessage"] = "Randevu başarıyla oluşturuldu!";
                     return RedirectToAction("MyAppointments");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error booking appointment: {ex.Message}");
-                TempData["ErrorMessage"] = "An error occurred while booking the appointment.";
+                TempData["ErrorMessage"] = "Randevu oluştururken bir hatayla karşılaşıldı..";
                 return RedirectToAction("BookAppointment");
             }
         }
@@ -166,11 +161,6 @@ namespace KuaförRandevuSistemi.Controllers
         public IActionResult MyAppointments()
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to view your appointments.";
-                return RedirectToAction("Login", "Account");
-            }
 
             using (var db = new SalonDbContext())
             {
@@ -205,31 +195,26 @@ namespace KuaförRandevuSistemi.Controllers
         public IActionResult CancelAppointment(int appointmentId)
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Please log in to manage your appointments.";
-                return RedirectToAction("Login", "Account");
-            }
 
             using (var db = new SalonDbContext())
             {
                 var appointment = db.Appointments.FirstOrDefault(a => a.Id == appointmentId && a.CustomerId == int.Parse(userId));
                 if (appointment == null)
                 {
-                    TempData["ErrorMessage"] = "Appointment not found.";
+                    TempData["ErrorMessage"] = "Randevu bulunamadı.";
                     return RedirectToAction("MyAppointments");
                 }
 
                 if (appointment.AppointmentDate <= DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "You cannot cancel a past or ongoing appointment.";
+                    TempData["ErrorMessage"] = "Geçmişte veya devam eden bir randevuyu iptal edemezsiniz.";
                     return RedirectToAction("MyAppointments");
                 }
 
                 appointment.Status = "Cancelled";
                 db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Appointment canceled successfully.";
+                TempData["SuccessMessage"] = "Randevu başarıyla iptal edildi.";
                 return RedirectToAction("MyAppointments");
             }
         }

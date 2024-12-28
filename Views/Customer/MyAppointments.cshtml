@@ -3,19 +3,17 @@
     var pastAppointments = ViewData["PastAppointments"] as List<KuaförRandevuSistemi.Models.Appointment> ?? new List<KuaförRandevuSistemi.Models.Appointment>();
 }
 
-<h1>My Appointments</h1>
-
 <!-- Future Appointments -->
-<h2>Upcoming Appointments</h2>
+<h2>Önümüzdeki Randevular</h2>
 @if (futureAppointments.Any())
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Date & Time</th>
-                <th>Service</th>
-                <th>Staff</th>
-                <th>Status</th>
+                <th>Tarih & Saat</th>
+                <th>Servis</th>
+                <th>Çalışan</th>
+                <th>Durum</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +23,22 @@
                     <td>@appointment.AppointmentDate.ToLocalTime()</td>
                     <td>@appointment.Service?.Name</td>
                     <td>@appointment.Staff?.Name @appointment.Staff?.Surname</td>
-                    <td>@appointment.Status</td>
+                    @if (appointment.Status == "Confirmed")
+                    {
+                        <td>Onaylandı</td>
+                    }
+                    @if (appointment.Status == "Pending")
+                    {
+                        <td>Beklemede</td>
+                    }
+                    @if (appointment.Status == "Cancelled")
+                    {
+                        <td>İptal Edildi</td>
+                    }
                     <td>
-                        <form method="post" action="/Customer/CancelAppointment" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                        <form method="post" action="/Customer/CancelAppointment" onsubmit="return confirm('Randuvuyu iptal etmek istediğinize emin misiniz?');">
                             <input type="hidden" name="appointmentId" value="@appointment.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">İptal et</button>
                         </form>
                     </td>
                 </tr>
@@ -43,16 +52,16 @@ else
 }
 
 <!-- Past Appointments -->
-<h2>Past Appointments</h2>
+<h2>Geçmiş Randevular</h2>
 @if (pastAppointments.Any())
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Date & Time</th>
-                <th>Service</th>
-                <th>Staff</th>
-                <th>Status</th>
+                <th>Tarih & Saat</th>
+                <th>Servis</th>
+                <th>Çalışan</th>
+                <th>Durum</th>
             </tr>
         </thead>
         <tbody>
@@ -62,7 +71,19 @@ else
                     <td>@appointment.AppointmentDate.ToLocalTime()</td>
                     <td>@appointment.Service?.Name</td>
                     <td>@appointment.Staff?.Name @appointment.Staff?.Surname</td>
-                    <td>@appointment.Status</td>
+
+                    @if (appointment.Status == "Confirmed")
+                    {
+                        <td>Onaylandı</td>
+                    }
+                    @if (appointment.Status == "Pending")
+                    {
+                        <td>Beklemede</td>
+                    }
+                    @if (appointment.Status == "Cancelled")
+                    {
+                        <td>İptal Edildi</td>
+                    }
                 </tr>
             }
         </tbody>
@@ -70,5 +91,5 @@ else
 }
 else
 {
-    <p>No past appointments.</p>
+    <p>Geçmiş Randevu yok.</p>
 }

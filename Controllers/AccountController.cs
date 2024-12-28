@@ -28,7 +28,7 @@ namespace KuaförRandevuSistemi.Controllers
                         // Check if the email is already registered
                         if (db.Users.Any(u => u.Email == user.Email))
                         {
-                            TempData["ErrorMessage"] = "Email is already registered.";
+                            TempData["ErrorMessage"] = "Bu Email çoktan kayıtlı.";
                             return View(user); // Return the same view with the error message
                         }
 
@@ -38,7 +38,7 @@ namespace KuaförRandevuSistemi.Controllers
                     }
 
                     // Set a success message
-                    TempData["SuccessMessage"] = "Account created successfully! Please log in.";
+                    TempData["SuccessMessage"] = "Hesabınız başarıyla oluşturuldu. Lütfen giriş yapın!";
 
                     // Redirect to login page
                     return RedirectToAction("Login");
@@ -46,13 +46,13 @@ namespace KuaförRandevuSistemi.Controllers
                 catch (Exception ex)
                 {
                     // Log error and display a message
-                    TempData["ErrorMessage"] = "An error occurred. Please try again.";
+                    TempData["ErrorMessage"] = "Bir hata oluştu. Lütfen tekrar deneyin.";
                     Console.WriteLine(ex.Message);
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "Please correct the errors and try again.";
+                TempData["ErrorMessage"] = "Lütfen hataları düzeltip tekrar deneyin.";
             }
 
             return View(user);
@@ -69,7 +69,7 @@ namespace KuaförRandevuSistemi.Controllers
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                TempData["ErrorMessage"] = "Email and password are required.";
+                TempData["ErrorMessage"] = "Email ve şifre gereklidir.";
                 return View();
             }
 
@@ -101,17 +101,17 @@ namespace KuaförRandevuSistemi.Controllers
                             Response.Cookies.Append("UserName", user.Name + " " + user.Surname, cookieOptions);
                         }
 
-                        TempData["SuccessMessage"] = "Login successful!";
+                        TempData["SuccessMessage"] = "Giriş başarılı!";
                         return RedirectToAction("Index", "Home");
                     }
                 }
 
-                TempData["ErrorMessage"] = "Invalid email or password.";
+                TempData["ErrorMessage"] = "Geçersiz Email veya Şifre.";
                 return View();
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred during login.";
+                TempData["ErrorMessage"] = "Giriş yapmaya çalışırken bir hata oluştu.";
                 Console.WriteLine(ex.Message);
                 return View();
             }
@@ -125,7 +125,7 @@ namespace KuaförRandevuSistemi.Controllers
             Response.Cookies.Delete("UserId");
             Response.Cookies.Delete("UserRole");
 
-            TempData["SuccessMessage"] = "You have been logged out.";
+            TempData["SuccessMessage"] = "Çıkış yaptınız.";
             return RedirectToAction("Index", "Home");
         }
 

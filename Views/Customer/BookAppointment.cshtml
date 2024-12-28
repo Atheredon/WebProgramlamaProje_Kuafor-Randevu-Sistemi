@@ -1,8 +1,5 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h1>Book an Appointment</h1>
+﻿
+<h1>Randevu al</h1>
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -13,9 +10,9 @@
 
 <form method="post" action="/Customer/BookAppointment">
     <div class="mb-3">
-        <label for="ServiceId" class="form-label">Service</label>
+        <label for="ServiceId" class="form-label">Servis</label>
         <select class="form-control" id="ServiceId" name="ServiceId" onchange="updateDetails()" required>
-            <option value="">Select a Service</option>
+            <option value="">Servis Seçin</option>
             @foreach (var service in ViewBag.Services as List<KuaförRandevuSistemi.Models.Service>)
             {
                 <option value="@service.Id" data-duration="@service.Duration" data-price="@service.Price">
@@ -26,9 +23,9 @@
     </div>
 
     <div class="mb-3">
-        <label for="StaffId" class="form-label">Staff</label>
+        <label for="StaffId" class="form-label">Çalışan</label>
         <select class="form-control" id="StaffId" name="StaffId" onchange="fetchAvailableSlots()" required>
-            <option value="">Select a Staff</option>
+            <option value="">Çalışan Seçin</option>
             @foreach (var staff in ViewBag.Staff as List<KuaförRandevuSistemi.Models.Staff>)
             {
                 @if(staff.Available)
@@ -49,29 +46,29 @@
     </div>
 
     <div class="mb-3">
-        <label for="AppointmentDate" class="form-label">Date</label>
+        <label for="AppointmentDate" class="form-label">Gün</label>
         <input type="date" class="form-control" id="AppointmentDate" name="AppointmentDate" onchange="fetchAvailableSlots()" required />
 
     </div>
 
     <div class="mb-3">
-        <label for="TimeSlot" class="form-label">Available Time Slots</label>
+        <label for="TimeSlot" class="form-label">Musait saatler</label>
         <select class="form-control" id="TimeSlot" name="TimeSlot" onchange="updateEndTime()" required>
-            <option value="">Select a Time Slot</option>
+            <option value="">Zaman dilimi seçin</option>
         </select>
     </div>
 
     <!-- Appointment Details -->
     <div class="mb-3">
         <p id="Details" class="fw-bold">
-            Starts At: <span id="StartTime">N/A</span> |
-            Ends At: <span id="EndTime">N/A</span> |
-            Total Time: <span id="TotalTime">0</span> minutes | 
-            Total Cost: $<span id="TotalCost">0</span>
+            Başlangıç: <span id="StartTime">N/A</span> |
+            Bitiş: <span id="EndTime">N/A</span> |
+            Süre: <span id="TotalTime">0</span> dakika | 
+            Ücret: <span id="TotalCost">0</span>₺
         </p>
     </div>
 
-    <button type="submit" class="btn btn-primary">Book Appointment</button>
+    <button type="submit" class="btn btn-primary">Randevu al</button>
 </form>
 
 

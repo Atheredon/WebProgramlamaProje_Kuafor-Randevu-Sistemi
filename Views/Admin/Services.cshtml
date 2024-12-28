@@ -4,7 +4,7 @@
 
 
 <div class="container mt-5">
-    <h1 class="mb-4">Services</h1>
+    <h1 class="mb-4">Servisler</h1>
 
     <!-- Success or Error Message -->
     @if (TempData["SuccessMessage"] != null)
@@ -23,18 +23,18 @@
 
     <!-- Add New Service Button -->
     <div class="d-flex justify-content-end mb-3">
-        <a class="btn btn-primary" href="/Admin/AddService">Add New Service</a>
+        <a class="btn btn-primary" href="/Admin/AddService">Yeni Servis Ekle</a>
     </div>
 
     <!-- Services Table -->
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Duration</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th>İsim</th>
+                <th>Açıklama</th>
+                <th>Süre</th>
+                <th>Fiyat</th>
+                <th>Aksiyonlar</th>
             </tr>
         </thead>
         <tbody>
@@ -43,14 +43,14 @@
                 <tr>
                     <td>@service.Name</td>
                     <td>@service.Description</td>
-                    <td>@service.Duration min</td>
-                    <td>@service.Price $</td>
+                    <td>@service.Duration dakika</td>
+                    <td>@service.Price ₺</td>
                     <td>
                         <!-- Edit Button -->
-                        <a class="btn btn-warning btn-sm me-2" href="/Admin/EditService/@service.Id">Edit</a>
+                        <a class="btn btn-warning btn-sm me-2" href="/Admin/EditService/@service.Id">Düzenle</a>
 
                         <!-- Remove Button -->
-                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(@service.Id, '@service.Name')">Remove</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(@service.Id, '@service.Name')">Kaldır</button>
                     </td>
                 </tr>
             }

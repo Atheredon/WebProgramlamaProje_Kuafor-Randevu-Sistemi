@@ -2,9 +2,9 @@
 @model KuaförRandevuSistemi.Models.User
 
 <div class="d-flex justify-content-center align-items-start vh-100">
-    <main class="form-signin">
+    <main class="form-signup">
         <form method="post" action="/Account/SignUp">
-            <h1 class="h3 mb-3 fw-normal text-center">Create an Account</h1>
+            <h1 class="h3 mb-3 fw-normal text-center">Hesap Oluştur</h1>
 
             @if (TempData["ErrorMessage"] != null)
             {
@@ -21,14 +21,14 @@
                 <!-- Name -->
                 <div class="col-md-6 form-floating">
                     <input type="text" class="form-control" id="floatingName" name="Name" placeholder="Name" required>
-                    <label for="floatingName">Name</label>
+                    <label for="floatingName">İsim</label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <!-- Surname -->
                 <div class="col-md-6 form-floating">
                     <input type="text" class="form-control" id="floatingSurname" name="Surname" placeholder="Surname" required>
-                    <label for="floatingSurname">Surname</label>
+                    <label for="floatingSurname">Soyisim</label>
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
             </div>
@@ -36,25 +36,25 @@
             <!-- Email -->
             <div class="form-floating mt-2">
                 <input type="email" class="form-control" id="floatingEmail" name="Email" placeholder="name@example.com" required>
-                <label for="floatingEmail">Email Address</label>
+                <label for="floatingEmail">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <!-- Password -->
             <div class="form-floating mt-2">
                 <input type="password" class="form-control" id="floatingPassword" name="Password" placeholder="Password" required>
-                <label for="floatingPassword">Password</label>
+                <label for="floatingPassword">Şifre</label>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <!-- Confirm Password -->
             <div class="form-floating mt-2">
                 <input type="password" class="form-control" id="floatingConfirmPassword" name="ConfirmPassword" placeholder="Confirm Password" required>
-                <label for="floatingConfirmPassword">Confirm Password</label>
+                <label for="floatingConfirmPassword">Şifre Tekrar</label>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Sign Up</button>
+            <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Kaydol</button>
         </form>
     </main>
 </div>

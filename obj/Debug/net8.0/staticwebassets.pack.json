@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\KuaförRandevuSistemi.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\css\\_bootswatch.scss",
+      "PackagePath": "staticwebassets\\css\\_bootswatch.scss"
+    },
+    {
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\css\\_variables.scss",
+      "PackagePath": "staticwebassets\\css\\_variables.scss"
+    },
+    {
       "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\css\\bootstrap-grid.css"
     },

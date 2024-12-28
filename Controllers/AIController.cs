@@ -35,13 +35,13 @@ namespace KuaförRandevuSistemi.Controllers
         {
             if (image == null || image.Length == 0)
             {
-                TempData["ErrorMessage"] = "Please upload a valid image.";
+                TempData["ErrorMessage"] = "Lütden uygun bir resim seçin.";
                 return RedirectToAction("UploadImage");
             }
 
             if (string.IsNullOrEmpty(prompt))
             {
-                TempData["ErrorMessage"] = "Please provide a prompt.";
+                TempData["ErrorMessage"] = "Lütfen bir prompt girin.";
                 return RedirectToAction("UploadImage");
             }
 
@@ -50,7 +50,7 @@ namespace KuaförRandevuSistemi.Controllers
                 var imageUrl = await UploadImageToTemporaryStorage(image);
                 if (imageUrl == null)
                 {
-                    TempData["ErrorMessage"] = "Failed to upload the image.";
+                    TempData["ErrorMessage"] = "Resim yüklenemedi.";
                     return RedirectToAction("UploadImage");
                 }
 
@@ -74,7 +74,7 @@ namespace KuaförRandevuSistemi.Controllers
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        TempData["ErrorMessage"] = "Failed to generate hairstyles. Please try again.";
+                        TempData["ErrorMessage"] = "Saç stili yüklenemedi. Lütfen tekrar deneyin.";
                         return RedirectToAction("UploadImage");
                     }
 
@@ -120,7 +120,7 @@ namespace KuaförRandevuSistemi.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception: {ex.Message}");
-                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again.";
+                TempData["ErrorMessage"] = "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.";
                 return RedirectToAction("UploadImage");
             }
         }
