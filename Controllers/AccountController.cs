@@ -129,6 +129,7 @@ namespace KuaförRandevuSistemi.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public IActionResult ViewDetails()
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -146,13 +147,57 @@ namespace KuaförRandevuSistemi.Controllers
                     return RedirectToAction("Login");
                 }
 
-                // Pass user data to the layout via ViewData
                 ViewData["UserName"] = user.Name + " " + user.Surname;
                 ViewData["UserRole"] = user.Role;
 
                 return View(user);
             }
         }
+
+        [HttpGet]
+        public IActionResult UpdateInfo()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var customer = db.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                return View(customer);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateInfo(User updatedUser)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            using (var db = new SalonDbContext())
+            {
+                var customer = db.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                if (customer != null)
+                {
+                    customer.Name = updatedUser.Name;
+                    customer.Surname = updatedUser.Surname;
+                    customer.Email = updatedUser.Email;
+
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "Hesap ayrıntıları başarıyla güncenlendi!";
+                }
+            }
+
+            return RedirectToAction("ViewDetails");
+        }
+
 
     }
 }

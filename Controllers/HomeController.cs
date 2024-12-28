@@ -23,6 +23,11 @@ namespace KuaförRandevuSistemi.Controllers
             return View();
         }
 
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Services()
         {
             using (var httpClient = new HttpClient())

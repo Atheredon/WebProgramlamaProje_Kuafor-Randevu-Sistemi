@@ -1,0 +1,32 @@
+﻿@model KuaförRandevuSistemi.Models.User
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Bilgilerinizi Güncelleyin</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form method="post" action="/Account/UpdateInfo">
+        <div class="mb-3">
+            <label for="name" class="form-label">İsim</label>
+            <input type="text" class="form-control" id="name" name="Name" value="@Model.Name" required>
+        </div>
+        <div class="mb-3">
+            <label for="surname" class="form-label">Soyisim</label>
+            <input type="text" class="form-control" id="surname" name="Surname" value="@Model.Surname" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="Email" value="@Model.Email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Bilgileri Güncelle</button>
+    </form>
+</div>

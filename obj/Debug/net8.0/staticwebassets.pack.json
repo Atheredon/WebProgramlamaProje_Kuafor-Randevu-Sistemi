@@ -165,20 +165,16 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\logo.jpg",
-      "PackagePath": "staticwebassets\\images\\logo.jpg"
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main1.jpg",
+      "PackagePath": "staticwebassets\\images\\main1.jpg"
     },
     {
-      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon1.jpg",
-      "PackagePath": "staticwebassets\\images\\salon1.jpg"
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main2.jpg",
+      "PackagePath": "staticwebassets\\images\\main2.jpg"
     },
     {
-      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon2.jpg",
-      "PackagePath": "staticwebassets\\images\\salon2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon3.jpg",
-      "PackagePath": "staticwebassets\\images\\salon3.jpg"
+      "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main3.jpg",
+      "PackagePath": "staticwebassets\\images\\main3.jpg"
     },
     {
       "Id": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\js\\bootstrap.bundle.js",

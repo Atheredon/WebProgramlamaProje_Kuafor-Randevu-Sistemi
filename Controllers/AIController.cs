@@ -11,12 +11,12 @@ namespace KuaförRandevuSistemi.Controllers
 {
     public class AIController : Controller
     {
-        private readonly string _replicateApiToken;
+        private readonly string _replicateApiToken = "r8_ZBVCT5xq0FhP2NKRgXyxONolLjRjdQm45Oaqu";//Problem when commiting in github
 
         public AIController()
         {
             // Retrieve the API key from the environment
-            _replicateApiToken = Environment.GetEnvironmentVariable("REPLICATE_API_TOKEN");
+            //_replicateApiToken = Environment.GetEnvironmentVariable("REPLICATE_API_TOKEN");
             if (string.IsNullOrEmpty(_replicateApiToken))
             {
                 throw new InvalidOperationException("Replicate API Token is not set in the environment.");

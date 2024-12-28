@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l+7OOGyZHW1YUS0oGtkT0hhHJb+J1FMR5IUXDjUyVdk=",
+  "Hash": "hoSoVqlFu5vIZycA6nAzDxAMIGSm1K5TPncLupnDScA=",
   "Source": "KuaförRandevuSistemi",
   "BasePath": "_content/KuaförRandevuSistemi",
   "Mode": "Default",
@@ -815,12 +815,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\logo.jpg",
+      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main1.jpg",
       "SourceId": "KuaförRandevuSistemi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\",
       "BasePath": "_content/KuaförRandevuSistemi",
-      "RelativePath": "images/logo.jpg",
+      "RelativePath": "images/main1.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -831,15 +831,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\logo.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\main1.jpg"
     },
     {
-      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon1.jpg",
+      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main2.jpg",
       "SourceId": "KuaförRandevuSistemi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\",
       "BasePath": "_content/KuaförRandevuSistemi",
-      "RelativePath": "images/salon1.jpg",
+      "RelativePath": "images/main2.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -850,15 +850,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\salon1.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\main2.jpg"
     },
     {
-      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon2.jpg",
+      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\main3.jpg",
       "SourceId": "KuaförRandevuSistemi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\",
       "BasePath": "_content/KuaförRandevuSistemi",
-      "RelativePath": "images/salon2.jpg",
+      "RelativePath": "images/main3.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -869,26 +869,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\salon2.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\images\\salon3.jpg",
-      "SourceId": "KuaförRandevuSistemi",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\",
-      "BasePath": "_content/KuaförRandevuSistemi",
-      "RelativePath": "images/salon3.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\salon3.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\main3.jpg"
     },
     {
       "Identity": "C:\\Users\\Uygar.UYGARPC.000\\source\\repos\\KuaförRandevuSistemi\\KuaförRandevuSistemi\\wwwroot\\js\\bootstrap.bundle.js",
