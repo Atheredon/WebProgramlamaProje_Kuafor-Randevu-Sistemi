@@ -6,7 +6,7 @@ namespace KuaförRandevuSistemi.Controllers
     public class AccountController : BaseController
     {
         [HttpGet]
-        public new IActionResult Unauthorized()
+        public IActionResult Unauthorized()
         {
             return View();
         }
