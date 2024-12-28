@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Account/Unauthorized.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxVbmF1dGhvcml6ZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Account/ViewDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3RGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -62,10 +66,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3VzdG9tZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Admin/DeleteService.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGVsZXRlU2VydmljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -86,6 +86,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3RhZmYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/AI/GeneratedHairstyles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQUlcR2VuZXJhdGVkSGFpcnN0eWxlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/AI/UploadImage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQUlcVXBsb2FkSW1hZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Customer/BookAppointment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQm9va0FwcG9pbnRtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -100,6 +108,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Home/Services.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZXJ2aWNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Uygar.UYGARPC.000/source/repos/KuaförRandevuSistemi/KuaförRandevuSistemi/Views/Shared/Error.cshtml]

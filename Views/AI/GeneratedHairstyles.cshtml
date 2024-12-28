@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Your Generated Hairstyles</h1>
+
+<div class="row">
+    <!-- Uploaded Image -->
+    <div class="col-md-6">
+        <h3>Uploaded Image</h3>
+        <div class="card">
+            <img src="@ViewBag.UploadedImageUrl" alt="Uploaded Image" class="card-img-top img-thumbnail" />
+            <div class="card-body text-center">
+                <a href="@ViewBag.UploadedImageUrl" target="_blank" class="btn btn-secondary">Download Original</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generated Images -->
+    <div class="col-md-6">
+        <h3>Generated Hairstyles</h3>
+        <div class="row">
+            @if (ViewBag.OutputUrls != null && ((List<string>)ViewBag.OutputUrls).Count > 0)
+            {
+                @foreach (var url in ViewBag.OutputUrls)
+                {
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <img src="@url" alt="Generated Image" class="card-img-top img-thumbnail" />
+                            <div class="card-body text-center">
+                                <a href="@url" target="_blank" class="btn btn-secondary">Download</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <p>No outputs were generated. Please try again.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,18 +1,13 @@
-﻿using KuaförRandevuSistemi.Models;
+﻿using KuaförRandevuSistemi.Filters;
+using KuaförRandevuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KuaförRandevuSistemi.Controllers
 {
-    public class AdminController : BaseAdminController
+    [RoleAuthorize("Admin")]
+    public class AdminController : BaseController
     {
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-
         public IActionResult Services()
         {
             using (var db = new SalonDbContext())
@@ -48,15 +43,9 @@ namespace KuaförRandevuSistemi.Controllers
         [HttpGet]
         public IActionResult DeleteService(int id)
         {
-            // Example validation for later
-            //var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
-            //if (hasAppointments)
-            //{
-            //    TempData["ErrorMessage"] = "This service cannot be deleted because it is associated with one or more appointments.";
-            //    return RedirectToAction("Services");
-            //}
             using (var db = new SalonDbContext())
             {
+                // Fetch the service
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
                 if (service == null)
                 {
@@ -64,8 +53,15 @@ namespace KuaförRandevuSistemi.Controllers
                     return RedirectToAction("Services");
                 }
 
-                // TODO: Add logic to check if the service is linked to appointments.
+                // Check if the service is associated with any appointments
+                var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
+                if (hasAppointments)
+                {
+                    TempData["ErrorMessage"] = $"Service '{service.Name}' cannot be deleted because it is associated with one or more appointments.";
+                    return RedirectToAction("Services");
+                }
 
+                // Remove the service
                 db.Services.Remove(service);
                 db.SaveChanges();
 
@@ -75,16 +71,10 @@ namespace KuaförRandevuSistemi.Controllers
             return RedirectToAction("Services");
         }
 
+
         [HttpGet]
         public IActionResult EditService(int id)
         {
-            // Example validation for later
-            //var hasAppointments = db.Appointments.Any(a => a.ServiceId == id);
-            //if (hasAppointments)
-            //{
-            //    TempData["ErrorMessage"] = "This service cannot be deleted because it is associated with one or more appointments.";
-            //    return RedirectToAction("Services");
-            //}
             using (var db = new SalonDbContext())
             {
                 var service = db.Services.FirstOrDefault(s => s.Id == id);
@@ -214,11 +204,6 @@ namespace KuaförRandevuSistemi.Controllers
         [HttpGet]
         public IActionResult EditStaff(int id)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             using (var db = new SalonDbContext())
             {
                 var staff = db.Set<Staff>()
@@ -308,83 +293,114 @@ namespace KuaförRandevuSistemi.Controllers
             using (var db = new SalonDbContext())
             {
                 var now = DateTime.UtcNow; // Use UTC explicitly
-                var startOfWeek = DateTime.SpecifyKind(now.AddDays(-(int)now.DayOfWeek), DateTimeKind.Utc); // Start of week in UTC
-                var startOfMonth = DateTime.SpecifyKind(new DateTime(now.Year, now.Month, 1), DateTimeKind.Utc); // Start of month in UTC
+
+                //Appointments by time
+                var appointmentsAllTimes = (from app in db.Appointments where (app.AppointmentDate <= now) select app).ToList();
+                var appointmentsThisWeek = (from app in appointmentsAllTimes
+                                            where (app.AppointmentDate.Year == now.Year && app.AppointmentDate.Month == now.Month && 
+                                             now.Date - app.AppointmentDate.Date <= new TimeSpan(7,0,0,0)) 
+                                            select app).ToList();
+                var appointmentsThisMonth = (from app in appointmentsAllTimes where (app.AppointmentDate.Year == now.Year && app.AppointmentDate.Month == now.Month) select app).ToList();
 
                 // Total appointments
-                var totalAppointments = db.Appointments.Count();
-                var weeklyAppointments = db.Appointments
-                    .Where(a => a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now)
-                    .Count();
-                var monthlyAppointments = db.Appointments
-                    .Where(a => a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now)
-                    .Count();
+                var totalAppointments = appointmentsAllTimes.Count();
+                var weeklyAppointments = appointmentsThisWeek.Count();
+                var monthlyAppointments = appointmentsThisMonth.Count();
 
                 // Total revenue
-                var totalRevenue = db.Appointments
-                    .Where(a => a.Status == "Confirmed")
-                    .Sum(a => a.Service.Price);
-                var weeklyRevenue = db.Appointments
-                    .Where(a => (a.Status == "Confirmed") && (a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now))
-                    .Sum(a => a.Service.Price);
-                var monthlyRevenue = db.Appointments
-                    .Where(a => (a.Status == "Confirmed") && (a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now))
-                    .Sum(a => a.Service.Price);
+                var totalRevenue = 0;
+                foreach( var appointment in (from app in appointmentsAllTimes join srvs in db.Services on app.ServiceId equals srvs.Id where (app.Status == "Confirmed") select app).ToList())
+                {
+                    totalRevenue += appointment.Service.Price;
+                }
+
+                var weeklyRevenue = 0;
+                foreach (var appointment in (from app in appointmentsThisWeek join srvs in db.Services on app.ServiceId equals srvs.Id where (app.Status == "Confirmed") select app).ToList())
+                {
+                    weeklyRevenue += appointment.Service.Price;
+                }
+
+                var monthlyRevenue = 0;
+                foreach (var appointment in (from app in appointmentsThisMonth join srvs in db.Services on app.ServiceId equals srvs.Id where(app.Status == "Confirmed") select app).ToList())
+                {
+                    monthlyRevenue += appointment.Service.Price;
+                }
 
                 // Popular services
-                var popularServices = db.Services
-                    .Select(s => new
-                    {
-                        ServiceName = s.Name,
-                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id)
-                    })
-                    .OrderByDescending(s => s.Bookings)
-                    .Take(5)
-                    .ToList();
-                var weeklyPopularServices = db.Services
-                    .Select(s => new
-                    {
-                        ServiceName = s.Name,
-                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id && a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now && a.Status == "Confirmed")
-                    })
-                    .OrderByDescending(s => s.Bookings)
-                    .Take(5)
-                    .ToList();
-                var monthlyPopularServices = db.Services
-                    .Select(s => new
-                    {
-                        ServiceName = s.Name,
-                        Bookings = db.Appointments.Count(a => a.ServiceId == s.Id && a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now && a.Status == "Confirmed")
-                    })
-                    .OrderByDescending(s => s.Bookings)
-                    .Take(5)
-                    .ToList();
+                var popularServices = (from app in appointmentsAllTimes
+                                       join service in db.Services on app.ServiceId equals service.Id
+                                       group service by service.Name into serviceGroup
+                                       orderby serviceGroup.Count() descending
+                                       select new
+                                       {
+                                           ServiceName = serviceGroup.Key,
+                                           Bookings = serviceGroup.Count()
+                                       })
+                                       .Take(5)
+                                       .ToList();
+
+                var weeklyPopularServices = (from app in appointmentsThisWeek
+                                             join service in db.Services on app.ServiceId equals service.Id
+                                             group service by service.Name into serviceGroup
+                                             orderby serviceGroup.Count() descending
+                                             select new
+                                             {
+                                                 ServiceName = serviceGroup.Key,
+                                                 Bookings = serviceGroup.Count()
+                                             })
+                                             .Take(5)
+                                             .ToList();
+
+                var monthlyPopularServices = (from app in appointmentsThisMonth
+                                              join service in db.Services on app.ServiceId equals service.Id
+                                              group service by service.Name into serviceGroup
+                                              orderby serviceGroup.Count() descending
+                                              select new
+                                              {
+                                                  ServiceName = serviceGroup.Key,
+                                                  Bookings = serviceGroup.Count()
+                                              })
+                                              .Take(5)
+                                              .ToList();
+
 
                 // Staff performance
-                var staffPerformance = db.Staffs
-                    .Select(s => new
-                    {
-                        StaffName = s.Name + " " + s.Surname,
-                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id)
-                    })
-                    .OrderByDescending(s => s.Appointments)
-                    .ToList();
-                var weeklyStaffPerformance = db.Staffs
-                    .Select(s => new
-                    {
-                        StaffName = s.Name + " " + s.Surname,
-                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id && a.AppointmentDate >= startOfWeek && a.AppointmentDate <= now && a.Status == "Confirmed")
-                    })
-                    .OrderByDescending(s => s.Appointments)
-                    .ToList();
-                var monthlyStaffPerformance = db.Staffs
-                    .Select(s => new
-                    {
-                        StaffName = s.Name + " " + s.Surname,
-                        Appointments = db.Appointments.Count(a => a.StaffId == s.Id && a.AppointmentDate >= startOfMonth && a.AppointmentDate <= now && a.Status == "Confirmed")
-                    })
-                    .OrderByDescending(s => s.Appointments)
-                    .ToList();
+                var staffPerformance = (from app in appointmentsAllTimes
+                                        join staff in db.Staffs on app.StaffId equals staff.Id
+                                        where app.Status == "Confirmed"
+                                        group staff by new { staff.Name, staff.Surname } into staffGroup
+                                        orderby staffGroup.Count() descending
+                                        select new
+                                        {
+                                            StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                            Appointments = staffGroup.Count()
+                                        })
+                                        .ToList();
+
+                var weeklyStaffPerformance = (from app in appointmentsThisWeek
+                                              join staff in db.Staffs on app.StaffId equals staff.Id
+                                              where app.Status == "Confirmed"
+                                              group staff by new { staff.Name, staff.Surname } into staffGroup
+                                              orderby staffGroup.Count() descending
+                                              select new
+                                              {
+                                                  StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                                  Appointments = staffGroup.Count()
+                                              })
+                                              .ToList();
+
+                var monthlyStaffPerformance = (from app in appointmentsThisMonth
+                                               join staff in db.Staffs on app.StaffId equals staff.Id
+                                               where app.Status == "Confirmed"
+                                               group staff by new { staff.Name, staff.Surname } into staffGroup
+                                               orderby staffGroup.Count() descending
+                                               select new
+                                               {
+                                                   StaffName = staffGroup.Key.Name + " " + staffGroup.Key.Surname,
+                                                   Appointments = staffGroup.Count()
+                                               })
+                                               .ToList();
+
 
                 // Pass data to the view
                 ViewBag.TotalAppointments = totalAppointments;

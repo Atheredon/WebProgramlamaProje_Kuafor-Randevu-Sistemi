@@ -23,6 +23,15 @@ namespace KuaförRandevuSistemi.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Services()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var services = await httpClient.GetFromJsonAsync<List<Service>>("https://localhost:7195/api/ServiceApi");
+                return View(services);
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

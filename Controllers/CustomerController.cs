@@ -1,16 +1,13 @@
-﻿using KuaförRandevuSistemi.Models;
+﻿using KuaförRandevuSistemi.Filters;
+using KuaförRandevuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KuaförRandevuSistemi.Controllers
 {
+    [RoleAuthorize("Customer")]
     public class CustomerController : BaseController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult BookAppointment()
         {

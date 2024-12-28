@@ -40,4 +40,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "ai",
+    pattern: "AI/{action=UploadImage}/{id?}");
+
 app.Run();

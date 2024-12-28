@@ -1,9 +1,11 @@
-﻿using KuaförRandevuSistemi.Models;
+﻿using KuaförRandevuSistemi.Filters;
+using KuaförRandevuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KuaförRandevuSistemi.Controllers
 {
+    [RoleAuthorize("Staff")]
     public class StaffController : BaseController
     {
         [HttpGet]
